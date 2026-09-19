@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+Iimport React, { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
 import {
   LayoutDashboard,
@@ -424,6 +424,7 @@ function Departments() {
 }
 
 function Agents() {
+    const [agentList, setAgentList] = useState(agents);
   return (
     <section className="content">
       <div className="page-head">
@@ -442,24 +443,41 @@ function Agents() {
       </div>
 
       <div className="table">
-        {agents.map(([name, dept, status]) => (
-          <div className="row" key={name}>
-            <div className="agent-avatar">
-              <Brain size={18} />
-            </div>
-            <div className="grow">
-              <b>{name}</b>
-              <small>{dept}</small>
-            </div>
-            <span className="status">{status}</span>
-            <ChevronRight size={18} />
-          </div>
-        ))}
-      </div>
-    </section>
-  );
-}
+  <div className="row">
+    <b>Agent</b>
+    <b>Department</b>
+    <b>Status</b>
+    <b>Action</b>
+  </div>
 
+  {agentList.map(([name, dept, status]) => (
+    <div className="row" key={name}>
+      <div className="agent-avatar">
+        <Brain size={18} />
+      </div>
+
+      <div className="grow">
+        <b>{name}</b>
+        <small>{dept}</small>
+      </div>
+
+      <span className="status">{status}</span>
+
+      <button
+        className="secondary"
+        onClick={() => alert(`${name} selected`)}
+      >
+        Open 
+      </button>
+    </div>
+  ))}
+</div>
+           
+  </section>
+);
+}
+    
+  
 function Clients() {
   return (
     <section className="content">
