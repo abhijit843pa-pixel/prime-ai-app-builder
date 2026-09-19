@@ -70,7 +70,9 @@ function App() {
   const [mobile, setMobile] = useState(false);
 
   const nav = [
-    ["dashboard", "Owner HQ", LayoutDashboard],
+  ["master", "Master Control", ShieldCheck],
+  ["dashboard", "Owner HQ", LayoutDashboard],
+ 
     ["ceo", "AI CEO", Brain],
     ["departments", "Departments", Building2],
     ["agents", "AI Agents", Users],
@@ -139,6 +141,7 @@ function App() {
             </button>
           </div>
         </header>
+        {page === "master" && <MasterControl />}
 
         {page === "dashboard" && <Dashboard setPage={setPage} />}
         {page === "ceo" && <CEO />}
@@ -152,7 +155,106 @@ function App() {
     </div>
   );
 }
+function MasterControl() {
+  const [freeAccess, setFreeAccess] = useState(false);
+  const [discounts, setDiscounts] = useState(true);
+  const [autoPricing, setAutoPricing] = useState(false);
 
+  return (
+    <section className="content">
+      <div className="page-head">
+        <div>
+          <small>MASTER AUTHORITY</small>
+          <h2>Master Control</h2>
+          <p>
+            Company-wide control for pricing, access and approvals.
+          </p>
+        </div>
+      </div>
+
+      <div className="hero">
+        <div>
+          <span className="eyebrow">CONTROL CENTER</span>
+          <h2>Free or Paid</h2>
+          <p>
+            Control whether services are free, paid or require Owner approval.
+          </p>
+        </div>
+      </div>
+
+      <div className="stats">
+        <Stat title="Free Access" value={freeAccess ? "ON" : "OFF"} />
+        <Stat title="Discounts" value={discounts ? "ON" : "OFF"} />
+        <Stat title="AI Pricing" value={autoPricing ? "ON" : "OFF"} />
+        <Stat title="Approval" value="OWNER" />
+      </div>
+
+      <div className="section-title">
+        <div>
+          <small>COMMERCIAL CONTROL</small>
+          <h2>Pricing Rules</h2>
+        </div>
+      </div>
+
+      <div className="cards">
+        <Card
+          icon={ShieldCheck}
+          title="Free Service"
+          text="Allow selected services or clients to receive services for free."
+          action={() => setFreeAccess(!freeAccess)}
+        />
+
+        <Card
+          icon={Wallet}
+          title="Paid Services"
+          text="Services and projects can be offered as paid products or subscriptions."
+          action={() => alert("Paid service control ready")}
+        />
+
+        <Card
+          icon={Settings}
+          title="Discount Control"
+          text="Control whether discounts are allowed."
+          action={() => setDiscounts(!discounts)}
+        />
+
+        <Card
+          icon={Brain}
+          title="AI Pricing"
+          text="AI CEO can recommend pricing and quotations. Final authority remains with Owner."
+          action={() => setAutoPricing(!autoPricing)}
+        />
+      </div>
+
+      <div className="section-title">
+        <div>
+          <small>APPROVALS</small>
+          <h2>Company Rules</h2>
+        </div>
+      </div>
+
+      <div className="cards">
+        <Card
+          icon={ShieldCheck}
+          title="Owner Approval"
+          text="Major pricing, discounts and payment changes require Owner approval."
+        />
+
+        <Card
+          icon={Brain}
+          title="AI CEO"
+          text="AI CEO can analyze deals and prepare quotations according to company rules."
+        />
+
+        <Card
+          icon={Users}
+          title="Future Expansion"
+          text="New departments, AI agents, products and services can be added later."
+        />
+      </div>
+    </section>
+  );
+}from 
 function Dashboard({ setPage }) {
   return (
     <section className="content">
