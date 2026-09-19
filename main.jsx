@@ -188,6 +188,7 @@ function MasterControl() {
         <Stat title="Discounts" value={discounts ? "ON" : "OFF"} />
         <Stat title="AI Pricing" value={autoPricing ? "ON" : "OFF"} />
         <Stat title="Approval" value="OWNER" />
+        <Stat title="Paid Services" value={paidServices ? "ON" : "OFF"} />
       </div>
 
       <div className="section-title">
