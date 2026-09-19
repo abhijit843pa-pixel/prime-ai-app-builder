@@ -432,7 +432,10 @@ function Agents() {
           <h2>AI Agents</h2>
           <p>Specialized AI employees across Nexora.</p>
         </div>
-        <button className="primary">
+        <button <button
+  className="primary"
+  onClick={() => alert("Create Agent system will be connected here.")}
+>
           <Plus size={18} />
           Create Agent
         </button>
