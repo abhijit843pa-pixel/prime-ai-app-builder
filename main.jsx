@@ -158,6 +158,7 @@ function App() {
 function MasterControl() {
   const [freeAccess, setFreeAccess] = useState(false);
   const [discounts, setDiscounts] = useState(true);
+  const [paidServices, setPaidServices] = useState(true);
   const [autoPricing, setAutoPricing] = useState(false);
 
   return (
