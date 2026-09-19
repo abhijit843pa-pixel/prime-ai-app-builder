@@ -279,7 +279,32 @@ function Dashboard({ setPage }) {
         <Stat title="AI Agents" value="5" />
         <Stat title="Active Projects" value="0" />
         <Stat title="Security Status" value="Protected" />
-      </div>
+      </div><div className="section-title">
+  <div>
+    <small>OWNER ACTIONS</small>
+    <h2>Pending Approvals</h2>
+  </div>
+</div>
+
+<div className="cards">
+  <Card
+    icon={ShieldCheck}
+    title="No Pending Approvals"
+    text="Major pricing, discounts, payments and high-risk company actions will appear here."
+  />
+
+  <Card
+    icon={Wallet}
+    title="Commercial Decisions"
+    text="Owner approval will be required for important pricing and payment decisions."
+  />
+
+  <Card
+    icon={Brain}
+    title="AI CEO Recommendations"
+    text="AI CEO recommendations waiting for Owner review will appear here."
+  />
+</div>
 
       <div className="section-title">
         <div>
