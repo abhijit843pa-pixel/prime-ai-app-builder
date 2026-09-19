@@ -254,7 +254,7 @@ function MasterControl() {
       </div>
     </section>
   );
-}from 
+}
 function Dashboard({ setPage }) {
   return (
     <section className="content">
