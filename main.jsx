@@ -209,7 +209,7 @@ function MasterControl() {
           icon={Wallet}
           title="Paid Services"
           text="Services and projects can be offered as paid products or subscriptions."
-          action={() => alert("Paid service control ready")}
+          action={() => setPaidServices(!paidServices)}
         />
 
         <Card
