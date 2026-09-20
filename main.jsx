@@ -429,37 +429,29 @@ function CEO() {
     { role: "ceo", text: "Hello Owner. How can I help manage Nexora today?" }
   ]);
   const [input, setInput] = useState("");
-const getCEOReply = (msg) => {
-  const text = msg.toLowerCase();
+const getCEOReply = async (msg) => {
+  try {
+    const response = await fetch("https://ceo.onrender.com/ceo", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: msg
+      })
+    });
 
-  if (text.includes("status")) {
-    return "Nexora company is running smoothly. All departments are active and AI agents are ready.";
+    const data = await response.json();
+
+    if (!response.ok) {
+      return data.error || "AI CEO could not process the command.";
+    }
+
+    return data.reply || "AI CEO returned no response.";
+  } catch (error) {
+    console.error(error);
+    return "AI CEO server se connection nahi ho pa raha.";
   }
-
-  if (text.includes("project")) {
-    return "Current projects are being analyzed. AI CEO recommends checking development, marketing and security teams.";
-  }
-  if (text.includes("report") || text.includes("company")) {
-  return "Nexora Company Report: All departments are active. AI CEO, Engineering, Security and Support teams are operational.";
-}
-
-if (text.includes("assign") || text.includes("agent")) {
-  return "AI Agent Assignment: Available agents can be assigned to Engineering, Security, Projects and Customer Support.";
-}
-
-if (text.includes("security")) {
-  return "Security Monitoring: Cyber Security systems are active. Running checks on company protection layers.";
-}
-
-  if (text.includes("team") || text.includes("employee")) {
-    return "AI workforce is available. You can create and manage specialized AI employees.";
-  }
-
-  if (text.includes("hello") || text.includes("hi")) {
-    return "Hello Owner. I am your Nexora AI CEO. How can I help you today?";
-  }
-
-  return "I am ready, Owner. Please provide a clear command about Nexora management, projects, teams or strategy.";
 };
   const sendMessage = async () => {
  if (!input.trim()) return;
