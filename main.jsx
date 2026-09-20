@@ -187,6 +187,33 @@ function MasterControl() {
     });
   }
 };
+  const [approvalRequired, setApprovalRequired] = useState(true);
+const [pendingApproval, setPendingApproval] = useState(null);
+
+const requestApproval = (service) => {
+  setPendingApproval({
+    service,
+    price: servicePrices[service],
+    status: "PENDING",
+  });
+};
+  const approveRequest = () => {
+  if (!pendingApproval) return;
+
+  setPendingApproval({
+    ...pendingApproval,
+    status: "APPROVED",
+  });
+};
+
+const rejectRequest = () => {
+  if (!pendingApproval) return;
+
+  setPendingApproval({
+    ...pendingApproval,
+    status: "REJECTED",
+  });
+};
 
   return (
     <section className="content">
