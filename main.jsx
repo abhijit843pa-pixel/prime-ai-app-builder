@@ -204,6 +204,29 @@ function MasterControl() {
           <h2>Pricing Rules</h2>
         </div>
       </div>
+      <div className="section-title">
+  <div>
+    <small>SERVICE ACCESS</small>
+    <h2>Service-wise Free / Paid</h2>
+  </div>
+</div>
+
+<div className="cards">
+  {Object.entries(serviceMode).map(([service, mode]) => (
+    <Card
+      key={service}
+      icon={Wallet}
+      title={`${service} — ${mode}`}
+      text={`Current mode: ${mode}. Tap to switch Free or Paid.`}
+      action={() =>
+        setServiceMode({
+          ...serviceMode,
+          [service]: mode === "PAID" ? "FREE" : "PAID",
+        })
+      }
+    />
+  ))}
+</div>
 
       <div className="cards">
         <Card
