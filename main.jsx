@@ -174,6 +174,19 @@ function MasterControl() {
   "UI/UX Design": 4000,
   "Cyber Security": 12000,
 });
+  const updatePrice = (service) => {
+  const newPrice = prompt(
+    `Enter price for ${service}`,
+    servicePrices[service]
+  );
+
+  if (newPrice) {
+    setServicePrices({
+      ...servicePrices,
+      [service]: Number(newPrice),
+    });
+  }
+};
 
   return (
     <section className="content">
