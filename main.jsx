@@ -429,7 +429,9 @@ function CEO() {
     { role: "ceo", text: "Hello Owner. How can I help manage Nexora today?" }
   ]);
   const [input, setInput] = useState("");
+  const [isThinking, setIsThinking] = useState(false);
 const getCEOReply = async (msg) => {
+  setIsThinking(true);
   try {
     const response = await fetch("https://nexora-ai-ceo.onrender.com/ceo", {
       method: "POST",
@@ -450,8 +452,10 @@ const getCEOReply = async (msg) => {
     return data.reply || "AI CEO returned no response.";
   } catch (error) {
     console.error(error);
-    return "AI CEO server se connection nahi ho pa raha.";
-  }
+return "AI CEO server se connection nahi ho pa raha.";
+  } finally {
+  setIsThinking(false);
+}
 };
   const sendMessage = async () => {
     if (!input.trim()) return;
@@ -502,19 +506,31 @@ setMessages((prev) => [
           <p>{message.text}</p>
         </div>
       ))}
+      {isThinking && (
+  <div className="chat-message ceo">
+    <b>AI CEO</b>
+    <p>🧠 AI CEO is thinking...</p>
+  </div>
+)}
     </div>
 
     <div className="chat-input">
-      <input
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Ask AI CEO anything..."
-      />
-      <button className="primary" onClick={sendMessage}>
-        Send
-      </button>
-    </div>
-  </section>
+  <textarea
+    value={input}
+    onChange={(e) => setInput(e.target.value)}
+    placeholder={isThinking ? "AI CEO is thinking..." : "Ask AI CEO anything..."}
+    disabled={isThinking}
+    rows={3}
+  />
+
+  <button
+    className="primary"
+    onClick={sendMessage}
+    disabled={isThinking}
+  >
+    {isThinking ? "Thinking..." : "Send"}
+  </button>
+</div>
 );
 }
 
