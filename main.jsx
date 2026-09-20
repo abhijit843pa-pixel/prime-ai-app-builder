@@ -433,7 +433,7 @@ function CEO() {
           <h2>AI CEO</h2>
           <p>Your future company management and planning layer.</p>
         </div>
-        <button className="primary">
+        <button className="primary" onClick={() => alert("Connecting to AI CEO...")}>
           <Phone size={18} />
           Call CEO
         </button>
