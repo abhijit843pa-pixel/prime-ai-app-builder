@@ -19,7 +19,7 @@ app.use(express.json());
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
 
 const model = genAI.getGenerativeModel({
-  model: "gemini-3.7-flash"
+  model: "gemini-3.6-flash"
 });
 
 app.get("/", (req, res) => {
