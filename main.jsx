@@ -439,6 +439,17 @@ const getCEOReply = (msg) => {
   if (text.includes("project")) {
     return "Current projects are being analyzed. AI CEO recommends checking development, marketing and security teams.";
   }
+  if (text.includes("report") || text.includes("company")) {
+  return "Nexora Company Report: All departments are active. AI CEO, Engineering, Security and Support teams are operational.";
+}
+
+if (text.includes("assign") || text.includes("agent")) {
+  return "AI Agent Assignment: Available agents can be assigned to Engineering, Security, Projects and Customer Support.";
+}
+
+if (text.includes("security")) {
+  return "Security Monitoring: Cyber Security systems are active. Running checks on company protection layers.";
+}
 
   if (text.includes("team") || text.includes("employee")) {
     return "AI workforce is available. You can create and manage specialized AI employees.";
