@@ -453,6 +453,9 @@ const getCEOReply = async (msg) => {
     return "AI CEO server se connection nahi ho pa raha.";
   }
 };
+  const sendMessage = async () => {
+    if (!input.trim()) return;
+const userMessage = input;
   setMessages([
   ...messages,
   { role: "owner", text: userMessage }
