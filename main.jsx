@@ -429,7 +429,27 @@ function CEO() {
     { role: "ceo", text: "Hello Owner. How can I help manage Nexora today?" }
   ]);
   const [input, setInput] = useState("");
+const getCEOReply = (msg) => {
+  const text = msg.toLowerCase();
 
+  if (text.includes("status")) {
+    return "Nexora company is running smoothly. All departments are active and AI agents are ready.";
+  }
+
+  if (text.includes("project")) {
+    return "Current projects are being analyzed. AI CEO recommends checking development, marketing and security teams.";
+  }
+
+  if (text.includes("team") || text.includes("employee")) {
+    return "AI workforce is available. You can create and manage specialized AI employees.";
+  }
+
+  if (text.includes("hello") || text.includes("hi")) {
+    return "Hello Owner. I am your Nexora AI CEO. How can I help you today?";
+  }
+
+  return "I received your request. I will analyze it and provide a management solution.";
+};
   const sendMessage = async () => {
  if (!input.trim()) return;
 
@@ -438,7 +458,10 @@ function CEO() {
  setMessages([
   ...messages,
   { role: "owner", text: userMessage },
-  { role: "ceo", text: "AI CEO is thinking..." }
+   { 
+ role: "ceo", 
+ text: getCEOReply(userMessage) 
+}
  ]);
 
  setInput("");
