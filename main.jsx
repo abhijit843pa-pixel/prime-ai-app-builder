@@ -431,7 +431,7 @@ function CEO() {
   const [input, setInput] = useState("");
 const getCEOReply = async (msg) => {
   try {
-    const response = await fetch("https://ceo.onrender.com/ceo", {
+    const response = await fetch("https://nexora-ai-ceo.onrender.com/ceo", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
