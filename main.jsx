@@ -430,16 +430,19 @@ function CEO() {
   ]);
   const [input, setInput] = useState("");
 
-  const sendMessage = () => {
-    if (!input.trim()) return;
+  const sendMessage = async () => {
+ if (!input.trim()) return;
 
-    setMessages([
-      ...messages,
-      { role: "owner", text: input },
-      { role: "ceo", text: "I received your request. AI CEO processing is ready to be connected." }
-    ]);
-    setInput("");
-  };
+ const userMessage = input;
+
+ setMessages([
+  ...messages,
+  { role: "owner", text: userMessage },
+  { role: "ceo", text: "AI CEO is thinking..." }
+ ]);
+
+ setInput("");
+};
   return (
   <section className="content">
     <div className="page-head">
