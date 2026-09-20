@@ -58,13 +58,22 @@ Owner command:
 ${message}
 `;
 
-    const result = await model.generateContent(prompt);
-    const reply = result.response.text();
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+res.setHeader("Cache-Control", "no-cache, no-transform");
+res.setHeader("Connection", "keep-alive");
+res.setHeader("X-Accel-Buffering", "no");
 
-    res.json({
-      role: "AI CEO",
-      reply: reply
-    });
+const result = await model.generateContentStream(prompt);
+
+for await (const chunk of result.stream) {
+  const text = chunk.text();
+
+  if (text) {
+    res.write(text);
+  }
+}
+
+res.end();
 
   } catch (error) {
     console.error(error);
