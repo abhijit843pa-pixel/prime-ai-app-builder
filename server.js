@@ -1,35 +1,41 @@
 const express = require("express");
-const app = express();
+const { GoogleGenerativeAI } = require("@google/generative-ai");
 
+const app = express();
 app.use(express.json());
 
-app.get("/", (req, res) => {
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+
+app.get("/", (req,res)=>{
   res.send("Nexora AI CEO Server Running");
 });
 
-app.post("/ceo", (req, res) => {
-  const message = req.body.message?.toLowerCase() || "";
+app.post("/ceo", async (req,res)=>{
 
-  let reply = "I am Nexora AI CEO. Please give me a clear command.";
+  const message = req.body.message || "";
 
-  if(message.includes("report")){
-    reply = "Nexora Company Report: All departments are active.";
-  }
+  const model = genAI.getGenerativeModel({
+    model: "gemini-1.5-flash"
+  });
 
-  if(message.includes("project")){
-    reply = "Projects are being analyzed by Nexora AI CEO.";
-  }
+  const prompt = `
+You are Nexora AI CEO.
+Manage company strategy, projects, departments and give professional answers.
 
-  if(message.includes("security")){
-    reply = "Security monitoring is active.";
-  }
+Owner command:
+${message}
+`;
+
+  const result = await model.generateContent(prompt);
+  const reply = result.response.text();
 
   res.json({
     role:"AI CEO",
-    reply: reply
+    reply:reply
   });
+
 });
 
-app.listen(3000, () => {
-  console.log("Nexora AI CEO running on port 3000");
-});nju
+app.listen(3000, ()=>{
+ console.log("Nexora AI CEO running");
+});
