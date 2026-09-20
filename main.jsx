@@ -167,6 +167,13 @@ function MasterControl() {
 "UI/UX Design": "PAID",
 "Cyber Security": "PAID",
 });
+  const [servicePrices, setServicePrices] = useState({
+  "Web Development": 5000,
+  "Mobile Development": 7000,
+  "AI Services": 10000,
+  "UI/UX Design": 4000,
+  "Cyber Security": 12000,
+});
 
   return (
     <section className="content">
