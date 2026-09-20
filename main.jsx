@@ -425,50 +425,63 @@ function Dashboard({ setPage }) {
 }
 
 function CEO() {
+  const [messages, setMessages] = useState([
+    { role: "ceo", text: "Hello Owner. How can I help manage Nexora today?" }
+  ]);
+  const [input, setInput] = useState("");
+
+  const sendMessage = () => {
+    if (!input.trim()) return;
+
+    setMessages([
+      ...messages,
+      { role: "owner", text: input },
+      { role: "ceo", text: "I received your request. AI CEO processing is ready to be connected." }
+    ]);
+    setInput("");
+  };
   return (
-    <section className="content">
-      <div className="page-head">
-        <div>
-          <small>COMPANY LEADERSHIP</small>
-          <h2>AI CEO</h2>
-          <p>Your future company management and planning layer.</p>
-        </div>
-        <button className="primary" onClick={() => alert("Connecting to AI CEO...")}>
-          <Phone size={18} />
-          Call CEO
-        </button>
+  <section className="content">
+    <div className="page-head">
+      <div>
+        <small>COMPANY LEADERSHIP</small>
+        <h2>AI CEO</h2>
+        <p>Your AI company management assistant.</p>
       </div>
+    </div>
 
-      <div className="ceo-card">
-        <div className="ceo-avatar">
-          <Brain size={38} />
-        </div>
-        <div>
-          <h2>AI CEO</h2>
-          <p>Company Management Agent</p>
-          <span className="status">● Ready for AI connection</span>
-        </div>
+    <div className="ceo-card">
+      <div className="ceo-avatar">
+        <Brain size={38} />
       </div>
+      <div>
+        <h2>AI CEO</h2>
+        <p>Company Management Agent</p>
+        <span className="status">● Ready</span>
+      </div>
+    </div>
 
-      <div className="cards">
-        <Card
-          icon={MessageSquare}
-          title="Ask CEO"
-          text="Company status, planning, projects and future strategy."
-        />
-        <Card
-          icon={FolderKanban}
-          title="Project Planning"
-          text="Analyze requirements and coordinate departments."
-        />
-        <Card
-          icon={Users}
-          title="AI Workforce"
-          text="Recommend new agents based on workload."
-        />
-      </div>
-    </section>
-  );
+    <div className="chat-box">
+      {messages.map((message, index) => (
+        <div key={index} className={`chat-message ${message.role}`}>
+          <b>{message.role === "ceo" ? "AI CEO" : "Owner"}</b>
+          <p>{message.text}</p>
+        </div>
+      ))}
+    </div>
+
+    <div className="chat-input">
+      <input
+        value={input}
+        onChange={(e) => setInput(e.target.value)}
+        placeholder="Ask AI CEO anything..."
+      />
+      <button className="primary" onClick={sendMessage}>
+        Send
+      </button>
+    </div>
+  </section>
+);
 }
 
 function Departments() {
