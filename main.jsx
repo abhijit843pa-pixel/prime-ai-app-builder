@@ -260,21 +260,16 @@ const rejectRequest = () => {
 
 <div className="cards">
   {Object.entries(serviceMode).map(([service, mode]) => (
-    <Card
-      key={service}
-      icon={Wallet}
-      title={`${service} — ${mode} — ₹${servicePrices[service]}`}
-      text={`Price: ₹${servicePrices[service]}. Tap to change price or switch Free/Paid.`}
-      action={() => {
-  updatePrice(service);
-}}
-    
-         
-       
-        
-    
-   
-  ))}
+  <Card
+    key={service}
+    icon={Wallet}
+    title={`${service} — ${mode} — ₹${servicePrices[service]}`}
+    text={`Price: ₹${servicePrices[service]}. Tap to change price or switch Free/Paid.`}
+    action={() => {
+      updatePrice(service);
+    }}
+  />
+))}
 </div>
 
       <div className="cards">
