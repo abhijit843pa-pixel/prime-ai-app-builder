@@ -160,6 +160,13 @@ function MasterControl() {
   const [discounts, setDiscounts] = useState(true);
   const [paidServices, setPaidServices] = useState(true);
   const [autoPricing, setAutoPricing] = useState(false);
+  const [serviceMode, setServiceMode] = useState({
+  "Web Development": "PAID",
+"Mobile Development": "PAID",
+"AI Services": "PAID",
+"UI/UX Design": "PAID",
+"Cyber Security": "PAID",
+});
 
   return (
     <section className="content">
