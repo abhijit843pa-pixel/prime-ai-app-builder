@@ -448,7 +448,7 @@ const getCEOReply = (msg) => {
     return "Hello Owner. I am your Nexora AI CEO. How can I help you today?";
   }
 
-  return "I received your request. I will analyze it and provide a management solution.";
+  return "I am ready, Owner. Please provide a clear command about Nexora management, projects, teams or strategy.";
 };
   const sendMessage = async () => {
  if (!input.trim()) return;
