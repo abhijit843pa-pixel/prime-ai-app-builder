@@ -236,14 +236,16 @@ function MasterControl() {
     <Card
       key={service}
       icon={Wallet}
-      title={`${service} — ${mode}`}
-      text={`Current mode: ${mode}. Tap to switch Free or Paid.`}
-      action={() =>
-        setServiceMode({
-          ...serviceMode,
-          [service]: mode === "PAID" ? "FREE" : "PAID",
-        })
-      }
+      title={`${service} — ${mode} — ₹${servicePrices[service]}`}
+      text={`Price: ₹${servicePrices[service]}. Tap to change price or switch Free/Paid.`}
+      action={() => {
+  updatePrice(service);
+}}
+    
+         
+       
+        
+    
     />
   ))}
 </div>
