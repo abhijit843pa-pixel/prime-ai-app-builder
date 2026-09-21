@@ -473,28 +473,7 @@ const getCEOReply = async (msg, onChunk) => {
     return "AI CEO server se connection nahi ho pa raha.";
   }
 };
-    const response = await fetch("https://nexora-ai-ceo.onrender.com/ceo", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      body: JSON.stringify({
-        message: msg
-      })
-    });
-
-    const data = await response.json();
-
-    if (!response.ok) {
-      return data.error || "AI CEO could not process the command.";
-    }
-
-    return data.reply || "AI CEO returned no response.";
-  } catch (error) {
-    console.error(error);
-    return "AI CEO server se connection nahi ho pa raha.";
-  }
-};
+    
   const sendMessage = async () => {
   if (!input.trim()) return;
 
