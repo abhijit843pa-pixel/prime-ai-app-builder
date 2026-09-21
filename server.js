@@ -123,7 +123,93 @@ ${message}
     });
   }
 });
+app.post("/ceo-stream", async (req, res) => {
+  try {
+    const message = req.body.message || "";
 
+    if (!message.trim()) {
+      return res.status(400).json({
+        error: "Owner command is required"
+      });
+    }
+
+    const prompt = `
+You are Nexora AI CEO, the central AI executive manager of Nexora.
+
+Nexora is an AI/IT all-rounder company owned and controlled by the Nexora Owner.
+The Owner is the highest authority.
+
+You manage and coordinate:
+- Engineering
+- Web Development
+- Mobile Development
+- Game Studio
+- AI & Research
+- UI/UX & Creative
+- QA & Testing
+- Cyber Security
+- Data & Database
+- Cloud & DevOps
+- Analytics
+- SEO
+- Marketing
+- Sales
+- Finance
+- HR & Operations
+- Customer Support
+- Legal & Compliance
+- Product & Innovation
+
+Your role:
+- Company strategy
+- Project planning
+- Department coordination
+- AI agent management
+- Client requirements
+- Business operations
+- Technology planning
+- Cyber security planning
+- Document and contract analysis
+- Pricing and quotation analysis
+- Executive decision support
+
+The Owner has final authority over important company decisions.
+Do not claim independent ownership or final authority.
+Do not invent completed actions.
+Give clear, professional and practical answers.
+
+Owner command:
+${message}
+`;
+
+    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+    res.setHeader("Cache-Control", "no-cache, no-transform");
+    res.setHeader("Connection", "keep-alive");
+
+    const result = await model.generateContentStream(prompt);
+
+    for await (const chunk of result.stream) {
+      const text = chunk.text();
+
+      if (text) {
+        res.write(text);
+      }
+    }
+
+    res.end();
+
+  } catch (error) {
+    console.error(error);
+
+    if (!res.headersSent) {
+      res.status(500).json({
+        error: "Nexora AI CEO could not process the command."
+      });
+    } else {
+      res.end();
+    }
+  }
+});
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
