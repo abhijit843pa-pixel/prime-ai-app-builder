@@ -504,19 +504,7 @@ const getCEOReply = async (msg, onChunk) => {
   });
 };
 
-const reply = await getCEOReply(userMessage);
-
-setMessages((prev) => [
-  ...prev,
-  {
-    role: "ceo",
-    text: reply
-  }
-]);
-
-
- setInput("");
-};
+  
   return (
   <section className="content">
     <div className="page-head">
