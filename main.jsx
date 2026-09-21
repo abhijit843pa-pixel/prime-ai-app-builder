@@ -429,6 +429,7 @@ function CEO() {
     { role: "ceo", text: "Hello Owner. How can I help manage Nexora today?" }
   ]);
   const [input, setInput] = useState("");
+  const [isTyping, setIsTyping] = useState(false);
 const getCEOReply = async (msg, onChunk) => {
   try {
     const response = await fetch("https://nexora-ai-ceo.onrender.com/ceo-stream", {
@@ -478,6 +479,7 @@ const getCEOReply = async (msg, onChunk) => {
   if (!input.trim()) return;
 
   const userMessage = input.trim();
+    setIsTyping(true);
 
   setMessages((prev) => [
     ...prev,
@@ -502,6 +504,7 @@ const getCEOReply = async (msg, onChunk) => {
       return updated;
     });
   });
+    setIsTyping(false);
 };
 
   
@@ -527,6 +530,12 @@ const getCEOReply = async (msg, onChunk) => {
     </div>
 
     <div className="chat-box">
+      {isTyping && (
+  <div className="chat-message ceo">
+    <b>AI CEO</b>
+    <p>CEO is typing...</p>
+  </div>
+)}
       {messages.map((message, index) => (
         <div key={index} className={`chat-message ${message.role}`}>
           <b>{message.role === "ceo" ? "AI CEO" : "Owner"}</b>
