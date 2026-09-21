@@ -530,6 +530,7 @@ setMessages((prev) => [
 }
 
 function Departments() {
+  // Departments section
   return (
     <section className="content">
       <div className="page-head">
