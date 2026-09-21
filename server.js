@@ -185,7 +185,8 @@ ${message}
     res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.setHeader("Cache-Control", "no-cache, no-transform");
     res.setHeader("Connection", "keep-alive");
-
+    res.flushHeaders();
+    
     const result = await model.generateContentStream(prompt);
 
     for await (const chunk of result.stream) {
