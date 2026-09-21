@@ -530,7 +530,7 @@ setMessages((prev) => [
 }
 
 function Departments() {
-  // Departments section
+  // Departments section - Nexora
   return (
     <section className="content">
       <div className="page-head">
