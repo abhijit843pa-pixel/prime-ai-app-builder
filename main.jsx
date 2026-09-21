@@ -731,9 +731,8 @@ function Empty({ title, text }) {
       <p>{text}</p>
     </div>
   );
-}
 
-createRoot(document.getElementById("root")).render(<App />);  );
+createRoot(document.getElementById("root")).render(<App />);
 }
 function MasterControl() {
   const [freeAccess, setFreeAccess] = useState(false);
