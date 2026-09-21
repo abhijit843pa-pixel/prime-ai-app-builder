@@ -2,8 +2,12 @@ import express from "express";
 import { GoogleGenerativeAI } from "@google/generative-ai";
 
 const app = express();
+
 app.use((req, res, next) => {
-  res.header("Access-Control-Allow-Origin", "https://abhijit843pa-pixel.github.io");
+  res.header(
+    "Access-Control-Allow-Origin",
+    "https://abhijit843pa-pixel.github.io"
+  );
   res.header("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
   res.header("Access-Control-Allow-Headers", "Content-Type");
 
@@ -58,22 +62,13 @@ Owner command:
 ${message}
 `;
 
-    res.setHeader("Content-Type", "text/plain; charset=utf-8");
-res.setHeader("Cache-Control", "no-cache, no-transform");
-res.setHeader("Connection", "keep-alive");
-res.setHeader("X-Accel-Buffering", "no");
+    const result = await model.generateContent(prompt);
+    const reply = result.response.text();
 
-const result = await model.generateContentStream(prompt);
-
-for await (const chunk of result.stream) {
-  const text = chunk.text();
-
-  if (text) {
-    res.write(text);
-  }
-}
-
-res.end();
+    res.json({
+      role: "AI CEO",
+      reply: reply
+    });
 
   } catch (error) {
     console.error(error);
