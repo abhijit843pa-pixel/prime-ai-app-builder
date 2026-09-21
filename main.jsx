@@ -429,8 +429,50 @@ function CEO() {
     { role: "ceo", text: "Hello Owner. How can I help manage Nexora today?" }
   ]);
   const [input, setInput] = useState("");
-const getCEOReply = async (msg) => {
+const getCEOReply = async (msg, onChunk) => {
   try {
+    const response = await fetch("https://nexora-ai-ceo.onrender.com/ceo-stream", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        message: msg
+      })
+    });
+
+    if (!response.ok) {
+      const data = await response.json().catch(() => ({}));
+      return data.error || "AI CEO could not process the command.";
+    }
+
+    if (!response.body) {
+      return "AI CEO server ne streaming response nahi diya.";
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let fullReply = "";
+
+    while (true) {
+      const { value, done } = await reader.read();
+
+      if (done) break;
+
+      const chunk = decoder.decode(value, { stream: true });
+      fullReply += chunk;
+
+      if (onChunk) {
+        onChunk(fullReply);
+      }
+    }
+
+    return fullReply || "AI CEO returned no response.";
+  } catch (error) {
+    console.error(error);
+    return "AI CEO server se connection nahi ho pa raha.";
+  }
+};
     const response = await fetch("https://nexora-ai-ceo.onrender.com/ceo", {
       method: "POST",
       headers: {
@@ -454,12 +496,34 @@ const getCEOReply = async (msg) => {
   }
 };
   const sendMessage = async () => {
-    if (!input.trim()) return;
-const userMessage = input;
-  setMessages([
-  ...messages,
-  { role: "owner", text: userMessage }
-]);
+  if (!input.trim()) return;
+
+  const userMessage = input.trim();
+
+  setMessages((prev) => [
+    ...prev,
+    { role: "owner", text: userMessage },
+    { role: "ceo", text: "" }
+  ]);
+
+  setInput("");
+
+  await getCEOReply(userMessage, (streamingReply) => {
+    setMessages((prev) => {
+      const updated = [...prev];
+      const lastIndex = updated.length - 1;
+
+      if (updated[lastIndex]?.role === "ceo") {
+        updated[lastIndex] = {
+          ...updated[lastIndex],
+          text: streamingReply
+        };
+      }
+
+      return updated;
+    });
+  });
+};
 
 const reply = await getCEOReply(userMessage);
 
