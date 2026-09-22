@@ -464,6 +464,45 @@ function CEO() {
 
   return "AI CEO";
 };
+  const detectAgent = (message, department) => {
+  const text = message.toLowerCase();
+
+  if (department === "Cyber Security") {
+    if (text.includes("security") || text.includes("hack")) {
+      return "Security Agent";
+    }
+    return "Cyber Security Agent";
+  }
+
+  if (department === "Web Development") {
+    if (text.includes("frontend") || text.includes("ui")) {
+      return "Frontend Agent";
+    }
+    return "Web Development Agent";
+  }
+
+  if (department === "Mobile Development") {
+    return "Mobile Development Agent";
+  }
+
+  if (department === "Game Studio") {
+    return "Game Development Agent";
+  }
+
+  if (department === "Marketing") {
+    return "Marketing Agent";
+  }
+
+  if (department === "Sales") {
+    return "Sales Agent";
+  }
+
+  if (department === "Data & Database") {
+    return "Data Agent";
+  }
+
+  return "CEO Agent";
+};
   const departmentInstruction = (department) => {
   return `Route this request to the ${department} department. Explain what that department should handle next.`;
 };
