@@ -602,6 +602,7 @@ setCeoStatus(`Responding... → ${department} → ${agent}`);
     });
   });
     setIsTyping(false);
+    setAwaitingApproval(true);
     setCeoStatus("Ready");
 };
 
