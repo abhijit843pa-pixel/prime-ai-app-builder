@@ -648,6 +648,9 @@ setCeoStatus(`Responding... → ${department} → ${agent}`);
   setTimeout(() => {
   setCeoStatus(`Working... → ${approvedAgent}`);
 }, 1000);
+   setTimeout(() => {
+  setCeoStatus(`Completed → ${approvedAgent}`);
+}, 3000);
 }}
     >
       Approve Plan
