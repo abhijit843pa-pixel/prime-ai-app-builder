@@ -643,6 +643,9 @@ setCeoStatus(`Responding... → ${department} → ${agent}`);
       onClick={() => {
   setAwaitingApproval(false);
   setCeoStatus("Execution Started");
+  setTimeout(() => {
+  setCeoStatus(`Working... → ${agent}`);
+}, 1000);
 }}
     >
       Approve Plan
