@@ -528,7 +528,7 @@ setCeoStatus("Thinking...");
 
   setInput("");
 setCeoStatus(`Responding... → ${department}`);
-  await getCEOReply(`${instruction}\n\nOwner request: ${userMessage}`, (streamingReply) => {
+  await getCEOReply(`${departmentInstruction}\n\nOwner request: ${userMessage}`, (streamingReply) => {
     setMessages((prev) => {
       const updated = [...prev];
       const lastIndex = updated.length - 1;
