@@ -644,7 +644,7 @@ setCeoStatus(`Responding... → ${department} → ${agent}`);
   setAwaitingApproval(false);
   setCeoStatus("Execution Started");
   setTimeout(() => {
-  setCeoStatus(`Working... → ${agent}`);
+  setCeoStatus("Working... → Assigned Agent");
 }, 1000);
 }}
     >
