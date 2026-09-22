@@ -647,10 +647,11 @@ setCeoStatus(`Responding... → ${department} → ${agent}`);
   setCeoStatus("Execution Started");
   setTimeout(() => {
   setCeoStatus(`Working... → ${approvedAgent}`);
-}, 1000);
+
    setTimeout(() => {
   setCeoStatus(`Completed → ${approvedAgent}`);
-}, 3000);
+     }, 2000);
+}, 1000);
 }}
     >
       Approve Plan
