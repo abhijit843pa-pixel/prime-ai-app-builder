@@ -574,7 +574,7 @@ const getCEOReply = async (msg, onChunk) => {
   const department = detectDepartment(userMessage);
   const agent = detectAgent(userMessage, department) || "CEO Agent";
   const agentRole = getAgentRole(agent);
-const departmentInstruction = `Route this request to the ${department} department. Assign this task to the ${agent}. Agent role: ${agentRole}`;
+   const departmentInstruction = `Route this request to the ${department} department. Assign this task to the ${agent}. Agent role: ${agentRole}. Break the Owner request into clear execution steps, identify required departments and dependencies, and explain what should happen next.`;
     setIsTyping(true);
 setCeoStatus("Thinking...");
   setMessages((prev) => [
