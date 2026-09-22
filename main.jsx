@@ -642,7 +642,7 @@ setCeoStatus(`Responding... → ${department} → ${agent}`);
       className="primary"
       onClick={() => {
   setAwaitingApproval(false);
-  setCeoStatus("Plan Approved");
+  setCeoStatus("Execution Started");
 }}
     >
       Approve Plan
