@@ -464,6 +464,9 @@ function CEO() {
 
   return "AI CEO";
 };
+  const departmentInstruction = (department) => {
+  return `Route this request to the ${department} department. Explain what that department should handle next.`;
+};
 const getCEOReply = async (msg, onChunk) => {
   try {
     const response = await fetch("https://nexora-ai-ceo.onrender.com/ceo-stream", {
@@ -514,6 +517,7 @@ const getCEOReply = async (msg, onChunk) => {
 
   const userMessage = input.trim();
     const department = detectDepartment(userMessage);
+    const departmentInstruction = `Route this request to the ${department} department. Explain what that department should handle next.`;
     setIsTyping(true);
 setCeoStatus("Thinking...");
   setMessages((prev) => [
@@ -524,7 +528,7 @@ setCeoStatus("Thinking...");
 
   setInput("");
 setCeoStatus(`Responding... → ${department}`);
-  await getCEOReply(userMessage, (streamingReply) => {
+  await getCEOReply(`${instruction}\n\nOwner request: ${userMessage}`, (streamingReply) => {
     setMessages((prev) => {
       const updated = [...prev];
       const lastIndex = updated.length - 1;
