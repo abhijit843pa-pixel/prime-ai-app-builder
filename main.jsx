@@ -503,6 +503,22 @@ function CEO() {
 
   return "CEO Agent";
 };
+  const getAgentRole = (agent) => {
+  const roles = {
+    "Security Agent": "Handle security analysis, threat detection, vulnerability review, and security planning.",
+    "Cyber Security Agent": "Handle cybersecurity architecture, protection, monitoring, and security planning.",
+    "Frontend Agent": "Handle frontend UI development, responsive layouts, components, and user experience implementation.",
+    "Web Development Agent": "Handle website architecture, frontend/backend web development, APIs, performance, and deployment planning.",
+    "Mobile Development Agent": "Handle mobile app architecture, Android/iOS development, APIs, testing, and release planning.",
+    "Game Development Agent": "Handle game architecture, gameplay systems, graphics integration, testing, and development planning.",
+    "Marketing Agent": "Handle marketing strategy, campaigns, content planning, audience growth, and brand promotion.",
+    "Sales Agent": "Handle client requirements, sales opportunities, proposals, and business development.",
+    "Data Agent": "Handle data architecture, databases, data processing, analytics, and data security.",
+    "CEO Agent": "Coordinate executive planning, company operations, departments, and strategic decisions."
+  };
+
+  return roles[agent] || "Handle the assigned task according to the department requirements.";
+};
   const departmentInstruction = (department) => {
   return `Route this request to the ${department} department. Explain what that department should handle next.`;
 };
