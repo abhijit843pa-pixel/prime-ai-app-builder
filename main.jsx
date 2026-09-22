@@ -640,7 +640,10 @@ setCeoStatus(`Responding... → ${department} → ${agent}`);
     <p><b>Owner Approval Required</b></p>
     <button
       className="primary"
-      onClick={() => setAwaitingApproval(false)}
+      onClick={() => {
+  setAwaitingApproval(false);
+  setCeoStatus("Plan Approved");
+}}
     >
       Approve Plan
     </button>
