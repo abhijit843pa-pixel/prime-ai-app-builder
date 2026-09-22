@@ -431,6 +431,39 @@ function CEO() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [ceoStatus, setCeoStatus] = useState("Ready");
+  const detectDepartment = (message) => {
+  const text = message.toLowerCase();
+
+  if (text.includes("security") || text.includes("hack") || text.includes("cyber")) {
+    return "Cyber Security";
+  }
+
+  if (text.includes("website") || text.includes("web")) {
+    return "Web Development";
+  }
+
+  if (text.includes("app") || text.includes("android") || text.includes("mobile")) {
+    return "Mobile Development";
+  }
+
+  if (text.includes("game")) {
+    return "Game Studio";
+  }
+
+  if (text.includes("marketing") || text.includes("promotion")) {
+    return "Marketing";
+  }
+
+  if (text.includes("sales") || text.includes("client")) {
+    return "Sales";
+  }
+
+  if (text.includes("database") || text.includes("data")) {
+    return "Data & Database";
+  }
+
+  return "AI CEO";
+};
 const getCEOReply = async (msg, onChunk) => {
   try {
     const response = await fetch("https://nexora-ai-ceo.onrender.com/ceo-stream", {
@@ -480,6 +513,7 @@ const getCEOReply = async (msg, onChunk) => {
   if (!input.trim()) return;
 
   const userMessage = input.trim();
+    const department = detectDepartment(userMessage);
     setIsTyping(true);
 setCeoStatus("Thinking...");
   setMessages((prev) => [
@@ -489,7 +523,7 @@ setCeoStatus("Thinking...");
   ]);
 
   setInput("");
-setCeoStatus("Responding...");
+setCeoStatus(`Responding... → ${department}`);
   await getCEOReply(userMessage, (streamingReply) => {
     setMessages((prev) => {
       const updated = [...prev];
