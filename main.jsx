@@ -430,6 +430,7 @@ function CEO() {
   ]);
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
+  const [ceoStatus, setCeoStatus] = useState("Ready");
 const getCEOReply = async (msg, onChunk) => {
   try {
     const response = await fetch("https://nexora-ai-ceo.onrender.com/ceo-stream", {
@@ -480,7 +481,7 @@ const getCEOReply = async (msg, onChunk) => {
 
   const userMessage = input.trim();
     setIsTyping(true);
-
+setCeoStatus("Thinking...");
   setMessages((prev) => [
     ...prev,
     { role: "owner", text: userMessage },
@@ -488,7 +489,7 @@ const getCEOReply = async (msg, onChunk) => {
   ]);
 
   setInput("");
-
+setCeoStatus("Responding...");
   await getCEOReply(userMessage, (streamingReply) => {
     setMessages((prev) => {
       const updated = [...prev];
@@ -505,6 +506,7 @@ const getCEOReply = async (msg, onChunk) => {
     });
   });
     setIsTyping(false);
+    setCeoStatus("Ready");
 };
 
   
@@ -525,7 +527,7 @@ const getCEOReply = async (msg, onChunk) => {
       <div>
         <h2>AI CEO</h2>
         <p>Company Management Agent</p>
-        <span className="status">● Ready</span>
+        <span className="status">● {ceoStatus}</span>
       </div>
     </div>
 
