@@ -556,7 +556,7 @@ const getCEOReply = async (msg, onChunk) => {
 
   const userMessage = input.trim();
     const department = detectDepartment(userMessage);
-    const departmentInstruction = `Route this request to the ${department} department. Explain what that department should handle next.`;
+    const departmentInstruction = `Route this request to the ${department} department. Assign this task to the ${agent} and explain what the agent should handle next.`;
     const agent = detectAgent(userMessage, department);
     setIsTyping(true);
 setCeoStatus("Thinking...");
