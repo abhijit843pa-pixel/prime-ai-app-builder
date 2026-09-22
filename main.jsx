@@ -518,6 +518,7 @@ const getCEOReply = async (msg, onChunk) => {
   const userMessage = input.trim();
     const department = detectDepartment(userMessage);
     const departmentInstruction = `Route this request to the ${department} department. Explain what that department should handle next.`;
+    const agent = detectAgent(userMessage, department);
     setIsTyping(true);
 setCeoStatus("Thinking...");
   setMessages((prev) => [
@@ -527,7 +528,7 @@ setCeoStatus("Thinking...");
   ]);
 
   setInput("");
-setCeoStatus(`Responding... → ${department}`);
+setCeoStatus(`Responding... → ${department} → ${agent}`);
   await getCEOReply(`${departmentInstruction}\n\nOwner request: ${userMessage}`, (streamingReply) => {
     setMessages((prev) => {
       const updated = [...prev];
