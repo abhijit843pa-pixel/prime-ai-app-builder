@@ -431,6 +431,7 @@ function CEO() {
   const [input, setInput] = useState("");
   const [isTyping, setIsTyping] = useState(false);
   const [ceoStatus, setCeoStatus] = useState("Ready");
+  const [awaitingApproval, setAwaitingApproval] = useState(false);
   const detectDepartment = (message) => {
   const text = message.toLowerCase();
 
