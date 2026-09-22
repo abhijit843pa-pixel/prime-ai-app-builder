@@ -635,6 +635,17 @@ setCeoStatus(`Responding... → ${department} → ${agent}`);
     <p>CEO is typing...</p>
   </div>
 )}
+      {awaitingApproval && (
+  <div className="approval-box">
+    <p><b>Owner Approval Required</b></p>
+    <button
+      className="primary"
+      onClick={() => setAwaitingApproval(false)}
+    >
+      Approve Plan
+    </button>
+  </div>
+)}
       {messages.map((message, index) => (
         <div key={index} className={`chat-message ${message.role}`}>
           <b>{message.role === "ceo" ? "AI CEO" : "Owner"}</b>
