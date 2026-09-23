@@ -842,7 +842,39 @@ function Security() {
       status: "Planning",
       department: "Web Development",
       agent: "Web Development Agent",
-      plan: "Requirements → UI/UX → Development → QA → Deployment"
+      plan: "Requirements → UI/UX → Development → QA → Deployment",
+      tasks: [
+        {
+          id: 1,
+          name: "Requirements",
+          agent: "Web Development Agent",
+          status: "Pending"
+        },
+        {
+          id: 2,
+          name: "UI/UX",
+          agent: "Frontend Agent",
+          status: "Pending"
+        },
+        {
+          id: 3,
+          name: "Development",
+          agent: "Web Development Agent",
+          status: "Pending"
+        },
+        {
+          id: 4,
+          name: "QA & Testing",
+          agent: "QA Agent",
+          status: "Pending"
+        },
+        {
+          id: 5,
+          name: "Deployment",
+          agent: "Cloud & DevOps Agent",
+          status: "Pending"
+        }
+      ]
     };
 
     setProjects((prevProjects) => [
@@ -862,6 +894,46 @@ function Security() {
           ? {
               ...project,
               status: "In Progress"
+            }
+          : project
+      )
+    );
+  };
+
+  const startTask = (projectId, taskId) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.id === projectId
+          ? {
+              ...project,
+              tasks: project.tasks.map((task) =>
+                task.id === taskId
+                  ? {
+                      ...task,
+                      status: "In Progress"
+                    }
+                  : task
+              )
+            }
+          : project
+      )
+    );
+  };
+
+  const completeTask = (projectId, taskId) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.id === projectId
+          ? {
+              ...project,
+              tasks: project.tasks.map((task) =>
+                task.id === taskId
+                  ? {
+                      ...task,
+                      status: "Completed"
+                    }
+                  : task
+              )
             }
           : project
       )
@@ -969,6 +1041,48 @@ function Security() {
                   Start Project
                 </button>
               )}
+
+              <div>
+                <h4>Project Tasks</h4>
+
+                {project.tasks.map((task) => (
+                  <div className="card" key={task.id}>
+                    <p>
+                      <b>{task.name}</b>
+                    </p>
+
+                    <p>
+                      <b>Agent:</b> {task.agent}
+                    </p>
+
+                    <p>
+                      <b>Status:</b> {task.status}
+                    </p>
+
+                    {task.status === "Pending" && (
+                      <button
+                        className="primary"
+                        onClick={() =>
+                          startTask(project.id, task.id)
+                        }
+                      >
+                        Start Task
+                      </button>
+                    )}
+
+                    {task.status === "In Progress" && (
+                      <button
+                        className="primary"
+                        onClick={() =>
+                          completeTask(project.id, task.id)
+                        }
+                      >
+                        Complete Task
+                      </button>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           ))}
         </div>
@@ -976,6 +1090,7 @@ function Security() {
     </section>
   );
 }
+
 function SettingsPage() {
   return (
     <section className="content">
