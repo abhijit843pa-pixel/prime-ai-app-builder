@@ -573,7 +573,12 @@ const getCEOReply = async (msg, onChunk) => {
   if (!input.trim()) return;
 
   const userMessage = input.trim();
-  const department = detectDepartment(userMessage);
+  const department =
+  userMessage.toLowerCase().includes("project") ||
+  userMessage.toLowerCase().includes("phase") ||
+  userMessage.toLowerCase().includes("approve")
+    ? "AI CEO"
+    : detectDepartment(userMessage);
   const agent = detectAgent(userMessage, department) || "CEO Agent";
   const agentRole = getAgentRole(agent);
    const departmentInstruction = `Route this request to the ${department} department. Assign this task to the ${agent}. Agent role: ${agentRole}. Break the Owner request into clear execution steps, identify required departments and dependencies, and explain what should happen next.`;
