@@ -797,7 +797,10 @@ function Projects() {
           <h2>Projects</h2>
           <p>Projects will be coordinated by CEO and departments.</p>
         </div>
-        <button className="primary">
+        <button
+  className="primary"
+  onClick={() => alert("New Project feature coming soon")}
+>
           <Plus size={18} />
           New Project
         </button>
