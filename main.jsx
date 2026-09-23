@@ -629,15 +629,7 @@ Agent Role: ${agentRole}`;
   setAwaitingApproval(true);
   setCeoStatus("Ready");
 };
-      }
-
-      return updated;
-    setIsTyping(false);
-    setApprovedAgent(agent);
-    setAwaitingApproval(true);
-    setCeoStatus("Ready");
-
-  
+      
   return (
   <section className="content">
     <div className="page-head">
