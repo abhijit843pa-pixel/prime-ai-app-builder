@@ -573,17 +573,29 @@ const getCEOReply = async (msg, onChunk) => {
   if (!input.trim()) return;
 
   const userMessage = input.trim();
+
   const department =
-  userMessage.toLowerCase().includes("project") ||
-  userMessage.toLowerCase().includes("phase") ||
-  userMessage.toLowerCase().includes("approve")
-    ? "AI CEO"
-    : detectDepartment(userMessage);
+    userMessage.toLowerCase().includes("project") ||
+    userMessage.toLowerCase().includes("phase") ||
+    userMessage.toLowerCase().includes("approve")
+      ? "AI CEO"
+      : detectDepartment(userMessage);
+
   const agent = detectAgent(userMessage, department) || "CEO Agent";
   const agentRole = getAgentRole(agent);
-   const departmentInstruction = `Route this request to the ${department} department. Assign this task to the ${agent}. Agent role: ${agentRole}. Break the Owner request into clear execution steps, identify required departments and dependencies, and explain what should happen next.`;
-    setIsTyping(true);
-setCeoStatus("Thinking...");
+
+  const departmentInstruction = `You are the AI CEO of Nexora.
+Handle the Owner request directly.
+Route work to the correct department and agent when needed.
+Explain clear execution steps, required departments, dependencies, and what happens next.
+
+Department: ${department}
+Agent: ${agent}
+Agent Role: ${agentRole}`;
+
+  setIsTyping(true);
+  setCeoStatus("Thinking...");
+
   setMessages((prev) => [
     ...prev,
     { role: "owner", text: userMessage },
@@ -591,8 +603,28 @@ setCeoStatus("Thinking...");
   ]);
 
   setInput("");
-setCeoStatus(`Responding... → ${department} → ${agent}`);
-  await getCEOReply(`${departmentInstruction}\n\nOwner request: ${userMessage}`, (streamingReply) => {
+  setCeoStatus(`Responding... → ${department} → ${agent}`);
+
+  const reply = await getCEOReply(
+    `${departmentInstruction}\n\nOwner request: ${userMessage}`,
+    (streamingReply) => {
+      setMessages((prev) => {
+        const updated = [...prev];
+        const lastIndex = updated.length - 1;
+
+        if (updated[lastIndex]?.role === "ceo") {
+          updated[lastIndex] = {
+            ...updated[lastIndex],
+            text: streamingReply
+          };
+        }
+
+        return updated;
+      });
+    }
+  );
+
+  if (reply) {
     setMessages((prev) => {
       const updated = [...prev];
       const lastIndex = updated.length - 1;
@@ -600,8 +632,19 @@ setCeoStatus(`Responding... → ${department} → ${agent}`);
       if (updated[lastIndex]?.role === "ceo") {
         updated[lastIndex] = {
           ...updated[lastIndex],
-          text: streamingReply
+          text: reply
         };
+      }
+
+      return updated;
+    });
+  }
+
+  setIsTyping(false);
+  setApprovedAgent(agent);
+  setAwaitingApproval(true);
+  setCeoStatus("Ready");
+};
       }
 
       return updated;
