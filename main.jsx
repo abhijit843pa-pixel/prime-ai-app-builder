@@ -788,10 +788,61 @@ function Clients() {
   );
 }
 
-function Projects() {
+
+
+function Security() {
+  return (
+    <section className="content">
+      <div className="page-head">
+        <div>
+          <small>SECURITY OPERATIONS</small>
+          <h2>Cyber Security</h2>
+          <p>Dedicated security department for Nexora.</p>
+        </div>
+      </div>
+
+      <div className="stats">
+        <Stat title="Security Status" value="Protected" />
+        <Stat title="Threats" value="0" />
+        <Stat title="Alerts" value="0" />
+        <Stat title="Monitoring" value="Ready" />
+      </div>
+
+      <div className="security-box">
+        <ShieldCheck size={32} />
+        <div>
+          <h3>Security foundation ready</h3>
+          <p>
+            Real monitoring, vulnerability management, incident response and
+            security tools will be connected during the backend phase.
+          </p>
+        </div>
+      </div>
+    </section>
+  );function Projects() {
   const [showForm, setShowForm] = useState(false);
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
+  const [projects, setProjects] = useState([]);
+
+  const createProject = () => {
+    if (!projectName.trim()) {
+      alert("Please enter a project name");
+      return;
+    }
+
+    const newProject = {
+      name: projectName.trim(),
+      description: projectDescription.trim(),
+      status: "Planning"
+    };
+
+    setProjects((prev) => [...prev, newProject]);
+
+    setProjectName("");
+    setProjectDescription("");
+    setShowForm(false);
+  };
 
   return (
     <section className="content">
@@ -831,15 +882,7 @@ function Projects() {
           <div>
             <button
               className="primary"
-              onClick={() => {
-                if (!projectName.trim()) {
-                  alert("Please enter a project name");
-                  return;
-                }
-
-                alert(`Project "${projectName}" created`);
-                setShowForm(false);
-              }}
+              onClick={createProject}
             >
               Create Project
             </button>
@@ -853,46 +896,25 @@ function Projects() {
         </div>
       )}
 
-      {!showForm && (
+      {projects.length === 0 && !showForm && (
         <Empty
           title="No projects yet"
           text="Create your first Nexora project."
         />
       )}
+
+      {projects.map((project, index) => (
+        <div className="card" key={index}>
+          <h3>{project.name}</h3>
+          <p>{project.description || "No description provided."}</p>
+          <p>
+            <b>Status:</b> {project.status}
+          </p>
+        </div>
+      ))}
     </section>
   );
 }
-
-function Security() {
-  return (
-    <section className="content">
-      <div className="page-head">
-        <div>
-          <small>SECURITY OPERATIONS</small>
-          <h2>Cyber Security</h2>
-          <p>Dedicated security department for Nexora.</p>
-        </div>
-      </div>
-
-      <div className="stats">
-        <Stat title="Security Status" value="Protected" />
-        <Stat title="Threats" value="0" />
-        <Stat title="Alerts" value="0" />
-        <Stat title="Monitoring" value="Ready" />
-      </div>
-
-      <div className="security-box">
-        <ShieldCheck size={32} />
-        <div>
-          <h3>Security foundation ready</h3>
-          <p>
-            Real monitoring, vulnerability management, incident response and
-            security tools will be connected during the backend phase.
-          </p>
-        </div>
-      </div>
-    </section>
-  );
 }
 
 function SettingsPage() {
