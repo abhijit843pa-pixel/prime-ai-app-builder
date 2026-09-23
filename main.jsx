@@ -605,7 +605,7 @@ Agent Role: ${agentRole}`;
   setInput("");
   setCeoStatus(`Responding... → ${department} → ${agent}`);
 
-  const reply = await getCEOReply(
+  await getCEOReply(
     `${departmentInstruction}\n\nOwner request: ${userMessage}`,
     (streamingReply) => {
       setMessages((prev) => {
@@ -623,22 +623,6 @@ Agent Role: ${agentRole}`;
       });
     }
   );
-
-  if (reply) {
-    setMessages((prev) => {
-      const updated = [...prev];
-      const lastIndex = updated.length - 1;
-
-      if (updated[lastIndex]?.role === "ceo") {
-        updated[lastIndex] = {
-          ...updated[lastIndex],
-          text: reply
-        };
-      }
-
-      return updated;
-    });
-  }
 
   setIsTyping(false);
   setApprovedAgent(agent);
