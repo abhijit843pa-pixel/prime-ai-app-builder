@@ -649,7 +649,6 @@ Agent Role: ${agentRole}`;
 
       return updated;
     });
-  });
     setIsTyping(false);
     setApprovedAgent(agent);
     setAwaitingApproval(true);
