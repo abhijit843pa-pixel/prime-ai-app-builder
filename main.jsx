@@ -573,7 +573,22 @@ const getCEOReply = async (msg, onChunk) => {
   if (!input.trim()) return;
 
   const userMessage = input.trim();
+if (
+  userMessage.toLowerCase().includes("create") &&
+  userMessage.toLowerCase().includes("project")
+) {
+  const nameMatch = userMessage.match(/project named ["']([^"']+)["']/i);
+  const descriptionMatch = userMessage.match(/description ["']([^"']+)["']/i);
 
+  if (nameMatch) {
+    createProjectFromCEO(
+      nameMatch[1],
+      descriptionMatch ? descriptionMatch[1] : ""
+    );
+
+    setCeoStatus("Project Created");
+  }
+}
   const department =
     userMessage.toLowerCase().includes("project") ||
     userMessage.toLowerCase().includes("phase") ||
@@ -909,7 +924,56 @@ function Security() {
     setProjectDescription("");
     setShowForm(false);
   };
+      const createProjectFromCEO = (name, description) => {
+  if (!name.trim()) return;
 
+  const newProject = {
+    id: Date.now(),
+    name: name.trim(),
+    description: description.trim(),
+    status: "Planning",
+    department: "Web Development",
+    agent: "Web Development Agent",
+    plan: "Requirements → UI/UX → Development → QA → Deployment",
+    tasks: [
+      {
+        id: 1,
+        name: "Requirements",
+        agent: "Web Development Agent",
+        status: "Pending"
+      },
+      {
+        id: 2,
+        name: "UI/UX",
+        agent: "Frontend Agent",
+        status: "Pending"
+      },
+      {
+        id: 3,
+        name: "Development",
+        agent: "Web Development Agent",
+        status: "Pending"
+      },
+      {
+        id: 4,
+        name: "QA & Testing",
+        agent: "QA Agent",
+        status: "Pending"
+      },
+      {
+        id: 5,
+        name: "Deployment",
+        agent: "Cloud & DevOps Agent",
+        status: "Pending"
+      }
+    ]
+  };
+
+  setProjects((prevProjects) => [
+    ...prevProjects,
+    newProject
+  ]);
+};
   const startProject = (projectId) => {
     setProjects((prevProjects) =>
       prevProjects.map((project) =>
