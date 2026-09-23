@@ -921,24 +921,33 @@ function Security() {
   };
 
   const completeTask = (projectId, taskId) => {
-    setProjects((prevProjects) =>
-      prevProjects.map((project) =>
-        project.id === projectId
+  setProjects((prevProjects) =>
+    prevProjects.map((project) => {
+      if (project.id !== projectId) {
+        return project;
+      }
+
+      const updatedTasks = project.tasks.map((task) =>
+        task.id === taskId
           ? {
-              ...project,
-              tasks: project.tasks.map((task) =>
-                task.id === taskId
-                  ? {
-                      ...task,
-                      status: "Completed"
-                    }
-                  : task
-              )
+              ...task,
+              status: "Completed"
             }
-          : project
-      )
-    );
-  };
+          : task
+      );
+
+      const allTasksCompleted = updatedTasks.every(
+        (task) => task.status === "Completed"
+      );
+
+      return {
+        ...project,
+        tasks: updatedTasks,
+        status: allTasksCompleted ? "Completed" : project.status
+      };
+    })
+  );
+};
 
   return (
     <section className="content">
