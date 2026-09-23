@@ -819,6 +819,7 @@ function Security() {
         </div>
       </div>
     </section>
+    
   function Projects() {
   return (
     <section className="content">
