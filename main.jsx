@@ -652,7 +652,6 @@ Agent Role: ${agentRole}`;
     setApprovedAgent(agent);
     setAwaitingApproval(true);
     setCeoStatus("Ready");
-};
 
   
   return (
