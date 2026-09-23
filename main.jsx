@@ -819,8 +819,9 @@ function Security() {
         </div>
       </div>
     </section>
-    
-  function Projects() {
+    );
+}
+    function Projects() {
   return (
     <section className="content">
       <div className="page-head">
