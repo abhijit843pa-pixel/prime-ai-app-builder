@@ -789,6 +789,10 @@ function Clients() {
 }
 
 function Projects() {
+  const [showForm, setShowForm] = useState(false);
+  const [projectName, setProjectName] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
+
   return (
     <section className="content">
       <div className="page-head">
@@ -797,16 +801,64 @@ function Projects() {
           <h2>Projects</h2>
           <p>Projects will be coordinated by CEO and departments.</p>
         </div>
+
         <button
-  className="primary"
-  onClick={() => alert("New Project feature coming soon")}
->
+          className="primary"
+          onClick={() => setShowForm(true)}
+        >
           <Plus size={18} />
           New Project
         </button>
       </div>
 
-      <Empty title="No projects yet" text="Projects will appear here after the backend is connected." />
+      {showForm && (
+        <div className="card">
+          <h3>Create New Project</h3>
+
+          <input
+            value={projectName}
+            onChange={(e) => setProjectName(e.target.value)}
+            placeholder="Project name"
+          />
+
+          <textarea
+            value={projectDescription}
+            onChange={(e) => setProjectDescription(e.target.value)}
+            placeholder="Describe the project..."
+            rows="5"
+          />
+
+          <div>
+            <button
+              className="primary"
+              onClick={() => {
+                if (!projectName.trim()) {
+                  alert("Please enter a project name");
+                  return;
+                }
+
+                alert(`Project "${projectName}" created`);
+                setShowForm(false);
+              }}
+            >
+              Create Project
+            </button>
+
+            <button
+              onClick={() => setShowForm(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {!showForm && (
+        <Empty
+          title="No projects yet"
+          text="Create your first Nexora project."
+        />
+      )}
     </section>
   );
 }
