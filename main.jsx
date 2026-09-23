@@ -822,25 +822,120 @@ function Security() {
     );
 }
     function Projects() {
+  const [showForm, setShowForm] = useState(false);
+  const [projectName, setProjectName] = useState("");
+  const [projectDescription, setProjectDescription] = useState("");
+  const [projects, setProjects] = useState([]);
+
+  const createProject = () => {
+    const name = projectName.trim();
+
+    if (!name) {
+      alert("Please enter a project name");
+      return;
+    }
+
+    const newProject = {
+      id: Date.now(),
+      name: name,
+      description: projectDescription.trim(),
+      status: "Planning"
+    };
+
+    setProjects((prevProjects) => [
+      ...prevProjects,
+      newProject
+    ]);
+
+    setProjectName("");
+    setProjectDescription("");
+    setShowForm(false);
+  };
+
   return (
     <section className="content">
       <div className="page-head">
         <div>
           <small>DELIVERY</small>
           <h2>Projects</h2>
-          <p>Projects will be coordinated by CEO and departments.</p>
+          <p>
+            Projects will be coordinated by CEO and departments.
+          </p>
         </div>
 
-        <button className="primary">
+        <button
+          className="primary"
+          onClick={() => setShowForm(true)}
+        >
           <Plus size={18} />
           New Project
         </button>
       </div>
 
-      <Empty
-        title="No projects yet"
-        text="Projects will appear here after the backend is connected."
-      />
+      {showForm && (
+        <div className="card">
+          <h3>Create New Project</h3>
+
+          <input
+            type="text"
+            value={projectName}
+            onChange={(e) => setProjectName(e.target.value)}
+            placeholder="Project name"
+          />
+
+          <textarea
+            value={projectDescription}
+            onChange={(e) => setProjectDescription(e.target.value)}
+            placeholder="Describe the project..."
+            rows={5}
+          />
+
+          <div>
+            <button
+              className="primary"
+              onClick={createProject}
+            >
+              Create Project
+            </button>
+
+            <button
+              onClick={() => {
+                setShowForm(false);
+                setProjectName("");
+                setProjectDescription("");
+              }}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
+
+      {projects.length === 0 && !showForm && (
+        <Empty
+          title="No projects yet"
+          text="Create your first Nexora project."
+        />
+      )}
+
+      {projects.length > 0 && (
+        <div className="cards">
+          {projects.map((project) => (
+            <div className="card" key={project.id}>
+              <h3>{project.name}</h3>
+
+              <p>
+                {project.description ||
+                  "No description provided."}
+              </p>
+
+              <p>
+                <b>Status:</b> {project.status}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
