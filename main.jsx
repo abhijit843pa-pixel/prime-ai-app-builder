@@ -839,7 +839,10 @@ function Security() {
       id: Date.now(),
       name: name,
       description: projectDescription.trim(),
-      status: "Planning"
+      status: "Planning",
+      department: "Web Development",
+      agent: "Web Development Agent",
+      plan: "Requirements → UI/UX → Development → QA → Deployment"
     };
 
     setProjects((prevProjects) => [
@@ -850,6 +853,19 @@ function Security() {
     setProjectName("");
     setProjectDescription("");
     setShowForm(false);
+  };
+
+  const startProject = (projectId) => {
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.id === projectId
+          ? {
+              ...project,
+              status: "In Progress"
+            }
+          : project
+      )
+    );
   };
 
   return (
@@ -932,6 +948,27 @@ function Security() {
               <p>
                 <b>Status:</b> {project.status}
               </p>
+
+              <p>
+                <b>Department:</b> {project.department}
+              </p>
+
+              <p>
+                <b>AI Agent:</b> {project.agent}
+              </p>
+
+              <p>
+                <b>CEO Plan:</b> {project.plan}
+              </p>
+
+              {project.status === "Planning" && (
+                <button
+                  className="primary"
+                  onClick={() => startProject(project.id)}
+                >
+                  Start Project
+                </button>
+              )}
             </div>
           ))}
         </div>
