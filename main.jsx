@@ -915,7 +915,7 @@ function Security() {
     </section>
   );
 }
-}
+
 
 function SettingsPage() {
   return (
