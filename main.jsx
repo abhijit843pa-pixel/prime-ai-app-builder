@@ -819,31 +819,7 @@ function Security() {
         </div>
       </div>
     </section>
-  );function Projects() {
-  const [showForm, setShowForm] = useState(false);
-  const [projectName, setProjectName] = useState("");
-  const [projectDescription, setProjectDescription] = useState("");
-  const [projects, setProjects] = useState([]);
-
-  const createProject = () => {
-    if (!projectName.trim()) {
-      alert("Please enter a project name");
-      return;
-    }
-
-    const newProject = {
-      name: projectName.trim(),
-      description: projectDescription.trim(),
-      status: "Planning"
-    };
-
-    setProjects((prev) => [...prev, newProject]);
-
-    setProjectName("");
-    setProjectDescription("");
-    setShowForm(false);
-  };
-
+  function Projects() {
   return (
     <section className="content">
       <div className="page-head">
@@ -853,71 +829,19 @@ function Security() {
           <p>Projects will be coordinated by CEO and departments.</p>
         </div>
 
-        <button
-          className="primary"
-          onClick={() => setShowForm(true)}
-        >
+        <button className="primary">
           <Plus size={18} />
           New Project
         </button>
       </div>
 
-      {showForm && (
-        <div className="card">
-          <h3>Create New Project</h3>
-
-          <input
-            value={projectName}
-            onChange={(e) => setProjectName(e.target.value)}
-            placeholder="Project name"
-          />
-
-          <textarea
-            value={projectDescription}
-            onChange={(e) => setProjectDescription(e.target.value)}
-            placeholder="Describe the project..."
-            rows="5"
-          />
-
-          <div>
-            <button
-              className="primary"
-              onClick={createProject}
-            >
-              Create Project
-            </button>
-
-            <button
-              onClick={() => setShowForm(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
-
-      {projects.length === 0 && !showForm && (
-        <Empty
-          title="No projects yet"
-          text="Create your first Nexora project."
-        />
-      )}
-
-      {projects.map((project, index) => (
-        <div className="card" key={index}>
-          <h3>{project.name}</h3>
-          <p>{project.description || "No description provided."}</p>
-          <p>
-            <b>Status:</b> {project.status}
-          </p>
-        </div>
-      ))}
+      <Empty
+        title="No projects yet"
+        text="Projects will appear here after the backend is connected."
+      />
     </section>
   );
 }
-}
-
-
 function SettingsPage() {
   return (
     <section className="content">
