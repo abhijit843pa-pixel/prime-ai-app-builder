@@ -927,7 +927,9 @@ function Security() {
   const [showForm, setShowForm] = useState(false);
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
-  const [projects, setProjects] = useState(() => {
+  useEffect(() => {
+  localStorage.setItem("nexora_projects", JSON.stringify(projects));
+}, [projects]);
   const savedProjects = localStorage.getItem("nexora_projects");
   return savedProjects ? JSON.parse(savedProjects) : [];
 });
