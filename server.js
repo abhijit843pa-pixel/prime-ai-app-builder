@@ -182,12 +182,34 @@ Owner command:
 ${message}
 `;
 
-    res.setHeader("Content-Type", "text/plain; charset=utf-8");
+        res.setHeader("Content-Type", "text/plain; charset=utf-8");
     res.setHeader("Cache-Control", "no-cache, no-transform");
     res.setHeader("Connection", "keep-alive");
+
+    let result;
+    let lastError;
+
+    for (let attempt = 1; attempt <= 3; attempt++) {
+      try {
+        result = await model.generateContentStream(prompt);
+        break;
+      } catch (error) {
+        lastError = error;
+        console.error(`CEO attempt ${attempt} failed:`, error);
+
+        if (attempt < 3) {
+          await new Promise((resolve) =>
+            setTimeout(resolve, attempt * 2000)
+          );
+        }
+      }
+    }
+
+    if (!result) {
+      throw lastError || new Error("Gemini service unavailable");
+    }
+
     res.flushHeaders();
-    
-    const result = await model.generateContentStream(prompt);
 
     for await (const chunk of result.stream) {
       const text = chunk.text();
@@ -198,7 +220,6 @@ ${message}
     }
 
     res.end();
-
     } catch (error) {
     console.error("CEO STREAM ERROR:", error);
 
