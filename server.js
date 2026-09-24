@@ -203,27 +203,36 @@ ${message}
     res.setHeader("Connection", "keep-alive");
 
     let result;
-    let lastError;
+let lastError;
 
-    for (let attempt = 1; attempt <= 3; attempt++) {
-      try {
-        result = await model.generateContentStream(prompt);
-        break;
-      } catch (error) {
-        lastError = error;
-        console.error(`CEO attempt ${attempt} failed:`, error);
+for (const currentModel of fallbackModels) {
+  for (let attempt = 1; attempt <= 2; attempt++) {
+    try {
+      result = await currentModel.generateContentStream(prompt);
+      break;
+    } catch (error) {
+      lastError = error;
+      console.error(
+        `CEO model attempt failed:`,
+        error
+      );
 
-        if (attempt < 3) {
-          await new Promise((resolve) =>
-            setTimeout(resolve, attempt * 2000)
-          );
-        }
+      if (attempt < 2) {
+        await new Promise((resolve) =>
+          setTimeout(resolve, attempt * 2000)
+        );
       }
     }
+  }
 
-    if (!result) {
-      throw lastError || new Error("Gemini service unavailable");
-    }
+  if (result) {
+    break;
+  }
+}
+
+if (!result) {
+  throw lastError || new Error("Gemini service unavailable");
+}
 
     res.flushHeaders();
 
