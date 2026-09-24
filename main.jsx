@@ -1042,7 +1042,30 @@ useEffect(() => {
       )
     );
   };
+  useEffect(() => {
+    const handleStartProject = (event) => {
+      const projectName = event.detail?.name?.trim().toLowerCase();
 
+      if (!projectName) return;
+
+      setProjects((prevProjects) =>
+        prevProjects.map((project) =>
+          project.name.trim().toLowerCase() === projectName
+            ? {
+                ...project,
+                status: "In Progress"
+              }
+            : project
+        )
+      );
+    };
+
+    window.addEventListener("nexora:start-project", handleStartProject);
+
+    return () => {
+      window.removeEventListener("nexora:start-project", handleStartProject);
+    };
+  }, []);
   const startTask = (projectId, taskId) => {
     setProjects((prevProjects) =>
       prevProjects.map((project) =>
