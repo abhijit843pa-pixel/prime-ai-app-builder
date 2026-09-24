@@ -1134,7 +1134,41 @@ useEffect(() => {
       )
     );
   };
+useEffect(() => {
+  const handleStartTask = (event) => {
+    const projectName = event.detail?.projectName?.trim().toLowerCase();
+    const taskName = event.detail?.taskName?.trim().toLowerCase();
 
+    if (!projectName || !taskName) return;
+
+    setProjects((prevProjects) =>
+      prevProjects.map((project) => {
+        if (project.name.trim().toLowerCase() !== projectName) {
+          return project;
+        }
+
+        return {
+          ...project,
+          status: "In Progress",
+          tasks: project.tasks.map((task) =>
+            task.name.trim().toLowerCase() === taskName
+              ? {
+                  ...task,
+                  status: "In Progress"
+                }
+              : task
+          )
+        };
+      })
+    );
+  };
+
+  window.addEventListener("nexora:start-task", handleStartTask);
+
+  return () => {
+    window.removeEventListener("nexora:start-task", handleStartTask);
+  };
+}, []);
   const completeTask = (projectId, taskId) => {
   setProjects((prevProjects) =>
     prevProjects.map((project) => {
