@@ -573,22 +573,7 @@ const getCEOReply = async (msg, onChunk) => {
   if (!input.trim()) return;
 
   const userMessage = input.trim();
-if (
-  userMessage.toLowerCase().includes("create") &&
-  userMessage.toLowerCase().includes("project")
-) {
-  const nameMatch = userMessage.match(/project named\s+["']?([^"'\n]+?)["']?(?:\s+with|\s*$)/i);
-const descriptionMatch = userMessage.match(/description\s+["']?([^"'\n]+)["']?/i);
 
-  if (nameMatch) {
-    createProjectFromCEO(
-      nameMatch[1],
-      descriptionMatch ? descriptionMatch[1] : ""
-    );
-
-    setCeoStatus("Project Created");
-  }
-}
   const department =
     userMessage.toLowerCase().includes("project") ||
     userMessage.toLowerCase().includes("phase") ||
