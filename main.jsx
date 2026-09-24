@@ -927,12 +927,32 @@ function Security() {
   const [showForm, setShowForm] = useState(false);
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
-  useEffect(() => {
-  localStorage.setItem("nexora_projects", JSON.stringify(projects));
-}, [projects]);
+const [projects, setProjects] = useState(() => {
   const savedProjects = localStorage.getItem("nexora_projects");
   return savedProjects ? JSON.parse(savedProjects) : [];
-   }, []);
+});
+
+useEffect(() => {
+  localStorage.setItem("nexora_projects", JSON.stringify(projects));
+}, [projects]);
+
+useEffect(() => {
+  const savedProject = localStorage.getItem("nexora_ceo_project");
+
+  if (savedProject) {
+    const project = JSON.parse(savedProject);
+
+    setProjects((prevProjects) => {
+      if (prevProjects.some((item) => item.id === project.id)) {
+        return prevProjects;
+      }
+
+      return [...prevProjects, project];
+    });
+
+    localStorage.removeItem("nexora_ceo_project");
+  }
+}, []);
 useEffect(() => {
   const savedProject = localStorage.getItem("nexora_ceo_project");
 
