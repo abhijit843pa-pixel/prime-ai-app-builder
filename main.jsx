@@ -629,6 +629,30 @@ if (
 );
   }
 }
+      if (
+    userMessage.toLowerCase().includes("start") &&
+    userMessage.toLowerCase().includes("project")
+  ) {
+    let startNameMatch = userMessage.match(
+      /start\s+project\s+named\s+["']?(.+?)["']?\s*$/i
+    );
+
+    if (!startNameMatch) {
+      startNameMatch = userMessage.match(
+        /start(?:\s+the)?\s+(.+?)\s+project\s*$/i
+      );
+    }
+
+    if (startNameMatch) {
+      window.dispatchEvent(
+        new CustomEvent("nexora:start-project", {
+          detail: {
+            name: startNameMatch[1]
+          }
+        })
+      );
+    }
+  }
   const department =
     userMessage.toLowerCase().includes("project") ||
     userMessage.toLowerCase().includes("phase") ||
