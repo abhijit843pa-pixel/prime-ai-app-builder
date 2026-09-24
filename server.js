@@ -198,22 +198,25 @@ Owner command:
 ${message}
 `;
 
-        res.setHeader("Content-Type", "text/plain; charset=utf-8");
-    res.setHeader("Cache-Control", "no-cache, no-transform");
-    res.setHeader("Connection", "keep-alive");
+res.setHeader("Content-Type", "text/plain; charset=utf-8");
 
-    let result;
+let reply = "";
 let lastError;
 
 for (const currentModel of fallbackModels) {
   for (let attempt = 1; attempt <= 2; attempt++) {
     try {
-      result = await currentModel.generateContentStream(prompt);
-      break;
+      const result = await currentModel.generateContent(prompt);
+      reply = result.response.text();
+
+      if (reply) {
+        break;
+      }
     } catch (error) {
       lastError = error;
+
       console.error(
-        `CEO model attempt failed:`,
+        "CEO model attempt failed:",
         error
       );
 
@@ -225,26 +228,16 @@ for (const currentModel of fallbackModels) {
     }
   }
 
-  if (result) {
+  if (reply) {
     break;
   }
 }
 
-if (!result) {
+if (!reply) {
   throw lastError || new Error("Gemini service unavailable");
 }
 
-    res.flushHeaders();
-
-    for await (const chunk of result.stream) {
-      const text = chunk.text();
-
-      if (text) {
-        res.write(text);
-      }
-    }
-
-    res.end();
+res.send(reply);
     } catch (error) {
     console.error("CEO STREAM ERROR:", error);
 
