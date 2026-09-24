@@ -677,16 +677,23 @@ if (
     );
 
     if (taskMatch) {
-      window.dispatchEvent(
-        new CustomEvent("nexora:start-task", {
-          detail: {
-            taskName: taskMatch[1].trim(),
-            projectName: taskMatch[2].trim()
-          }
-        })
-      );
-    }
-  }
+  localStorage.setItem(
+    "nexora_ceo_task",
+    JSON.stringify({
+      taskName: taskMatch[1].trim(),
+      projectName: taskMatch[2].trim()
+    })
+  );
+
+  window.dispatchEvent(
+    new CustomEvent("nexora:start-task", {
+      detail: {
+        taskName: taskMatch[1].trim(),
+        projectName: taskMatch[2].trim()
+      }
+    })
+  );
+}
   const department =
     userMessage.toLowerCase().includes("project") ||
     userMessage.toLowerCase().includes("phase") ||
