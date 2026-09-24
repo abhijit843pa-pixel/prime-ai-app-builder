@@ -537,9 +537,16 @@ const getCEOReply = async (msg, onChunk) => {
     });
 
     if (!response.ok) {
-      const data = await response.json().catch(() => ({}));
-      return data.error || "AI CEO could not process the command.";
-    }
+  const data = await response.json().catch(() => ({}));
+  const errorMessage =
+    data.error || "AI CEO could not process the command.";
+
+  if (onChunk) {
+    onChunk(errorMessage);
+  }
+
+  return errorMessage;
+}
 
     if (!response.body) {
       return "AI CEO server ne streaming response nahi diya.";
@@ -563,10 +570,18 @@ const getCEOReply = async (msg, onChunk) => {
     }
 
     return fullReply || "AI CEO returned no response.";
-  } catch (error) {
-    console.error(error);
-    return "AI CEO server se connection nahi ho pa raha.";
+} catch (error) {
+  console.error(error);
+
+  const errorMessage =
+    "AI CEO server se connection nahi ho pa raha.";
+
+  if (onChunk) {
+    onChunk(errorMessage);
   }
+
+  return errorMessage;
+}
 };
     
   const sendMessage = async () => {
