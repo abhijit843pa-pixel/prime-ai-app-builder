@@ -653,6 +653,25 @@ if (
       );
     }
   }
+      if (
+    userMessage.toLowerCase().includes("start") &&
+    userMessage.toLowerCase().includes("task")
+  ) {
+    const taskMatch = userMessage.match(
+      /start\s+(.*?)\s+task\s+of\s+(.+)$/i
+    );
+
+    if (taskMatch) {
+      window.dispatchEvent(
+        new CustomEvent("nexora:start-task", {
+          detail: {
+            taskName: taskMatch[1].trim(),
+            projectName: taskMatch[2].trim()
+          }
+        })
+      );
+    }
+  }
   const department =
     userMessage.toLowerCase().includes("project") ||
     userMessage.toLowerCase().includes("phase") ||
