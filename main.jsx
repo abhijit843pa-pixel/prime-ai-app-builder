@@ -868,7 +868,23 @@ function Security() {
   const [projectName, setProjectName] = useState("");
   const [projectDescription, setProjectDescription] = useState("");
   const [projects, setProjects] = useState([]);
+useEffect(() => {
+  const savedProject = localStorage.getItem("nexora_ceo_project");
 
+  if (savedProject) {
+    const project = JSON.parse(savedProject);
+
+    setProjects((prevProjects) => {
+      if (prevProjects.some((item) => item.id === project.id)) {
+        return prevProjects;
+      }
+
+      return [...prevProjects, project];
+    });
+
+    localStorage.removeItem("nexora_ceo_project");
+  }
+}, []);
   const createProject = () => {
     const name = projectName.trim();
 
