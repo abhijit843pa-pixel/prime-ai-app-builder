@@ -577,8 +577,8 @@ if (
   userMessage.toLowerCase().includes("create") &&
   userMessage.toLowerCase().includes("project")
 ) {
-  const nameMatch = userMessage.match(/project named ["']([^"']+)["']/i);
-  const descriptionMatch = userMessage.match(/description ["']([^"']+)["']/i);
+  const nameMatch = userMessage.match(/project named\s+["']?([^"'\n]+?)["']?(?:\s+with|\s*$)/i);
+const descriptionMatch = userMessage.match(/description\s+["']?([^"'\n]+)["']?/i);
 
   if (nameMatch) {
     createProjectFromCEO(
