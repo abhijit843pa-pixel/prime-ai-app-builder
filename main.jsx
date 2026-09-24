@@ -1207,6 +1207,21 @@ useEffect(() => {
 
   window.addEventListener("nexora:start-task", handleStartTask);
 
+  const savedTask = localStorage.getItem("nexora_ceo_task");
+
+  if (savedTask) {
+    const task = JSON.parse(savedTask);
+
+    handleStartTask({
+      detail: {
+        taskName: task.taskName,
+        projectName: task.projectName
+      }
+    });
+
+    localStorage.removeItem("nexora_ceo_task");
+  }
+
   return () => {
     window.removeEventListener("nexora:start-task", handleStartTask);
   };
