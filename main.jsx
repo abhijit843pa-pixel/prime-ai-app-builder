@@ -583,12 +583,48 @@ if (
   );
 
   if (nameMatch) {
-    window.dispatchEvent(
-  new CustomEvent("nexora:create-project", {
-    detail: {
-      name: nameMatch[1],
-      description: ""
-    }
+    localStorage.setItem(
+  "nexora_ceo_project",
+  JSON.stringify({
+    id: Date.now(),
+    name: nameMatch[1].trim(),
+    description: "",
+    status: "Planning",
+    department: "Web Development",
+    agent: "Web Development Agent",
+    plan: "Requirements → UI/UX → Development → QA → Deployment",
+    tasks: [
+      {
+        id: 1,
+        name: "Requirements",
+        agent: "Web Development Agent",
+        status: "Pending"
+      },
+      {
+        id: 2,
+        name: "UI/UX",
+        agent: "Frontend Agent",
+        status: "Pending"
+      },
+      {
+        id: 3,
+        name: "Development",
+        agent: "Web Development Agent",
+        status: "Pending"
+      },
+      {
+        id: 4,
+        name: "QA & Testing",
+        agent: "QA Agent",
+        status: "Pending"
+      },
+      {
+        id: 5,
+        name: "Deployment",
+        agent: "Cloud & DevOps Agent",
+        status: "Pending"
+      }
+    ]
   })
 );
   }
