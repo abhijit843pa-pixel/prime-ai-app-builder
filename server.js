@@ -199,12 +199,12 @@ ${message}
 
     res.end();
 
-  } catch (error) {
-    console.error(error);
+    } catch (error) {
+    console.error("CEO STREAM ERROR:", error);
 
     if (!res.headersSent) {
       res.status(500).json({
-        error: "Nexora AI CEO could not process the command."
+        error: error?.message || "Nexora AI CEO could not process the command."
       });
     } else {
       res.end();
