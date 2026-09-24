@@ -26,6 +26,22 @@ const model = genAI.getGenerativeModel({
   model: "gemini-3.8-flash"
 });
 
+const fallbackModels = [
+  model,
+  genAI.getGenerativeModel({
+    model: "gemini-3.7-flash"
+  }),
+  genAI.getGenerativeModel({
+    model: "gemini-3.6-flash"
+  }),
+  genAI.getGenerativeModel({
+    model: "gemini-3.5-flash-lite"
+  }),
+  genAI.getGenerativeModel({
+    model: "gemini-3.1-flash-lite"
+  })
+];
+
 app.get("/", (req, res) => {
   res.send("Nexora AI CEO Server Running");
 });
