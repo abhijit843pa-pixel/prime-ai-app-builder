@@ -693,7 +693,8 @@ if (
       }
     })
   );
-}
+    }
+    }
   const department =
     userMessage.toLowerCase().includes("project") ||
     userMessage.toLowerCase().includes("phase") ||
