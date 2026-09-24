@@ -932,7 +932,7 @@ function Security() {
 }, [projects]);
   const savedProjects = localStorage.getItem("nexora_projects");
   return savedProjects ? JSON.parse(savedProjects) : [];
-});
+   }, []);
 useEffect(() => {
   const savedProject = localStorage.getItem("nexora_ceo_project");
 
