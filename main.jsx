@@ -583,7 +583,14 @@ if (
   );
 
   if (nameMatch) {
-    createProjectFromCEO(nameMatch[1], "");
+    window.dispatchEvent(
+  new CustomEvent("nexora:create-project", {
+    detail: {
+      name: nameMatch[1],
+      description: ""
+    }
+  })
+);
   }
 }
   const department =
