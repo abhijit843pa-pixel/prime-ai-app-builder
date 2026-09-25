@@ -695,6 +695,33 @@ if (
   );
     }
     }
+    if (
+  userMessage.toLowerCase().includes("complete") &&
+  userMessage.toLowerCase().includes("task")
+) {
+  const completeTaskMatch = userMessage.match(
+    /complete\s+(.*?)\s+task\s+of\s+(.+)$/i
+  );
+
+  if (completeTaskMatch) {
+    localStorage.setItem(
+      "nexora_ceo_complete_task",
+      JSON.stringify({
+        taskName: completeTaskMatch[1].trim(),
+        projectName: completeTaskMatch[2].trim()
+      })
+    );
+
+    window.dispatchEvent(
+      new CustomEvent("nexora:complete-task", {
+        detail: {
+          taskName: completeTaskMatch[1].trim(),
+          projectName: completeTaskMatch[2].trim()
+        }
+      })
+    );
+  }
+}
   const department =
     userMessage.toLowerCase().includes("project") ||
     userMessage.toLowerCase().includes("phase") ||
@@ -1224,6 +1251,65 @@ useEffect(() => {
 
   return () => {
     window.removeEventListener("nexora:start-task", handleStartTask);
+  };
+}, []);
+      useEffect(() => {
+  const handleCompleteTask = (event) => {
+    const projectName = event.detail?.projectName?.trim().toLowerCase();
+    const taskName = event.detail?.taskName?.trim().toLowerCase();
+
+    if (!projectName || !taskName) return;
+
+    setProjects((prevProjects) =>
+      prevProjects.map((project) => {
+        if (project.name.trim().toLowerCase() !== projectName) {
+          return project;
+        }
+
+        const updatedTasks = project.tasks.map((task) =>
+          task.name.trim().toLowerCase() === taskName
+            ? {
+                ...task,
+                status: "Completed"
+              }
+            : task
+        );
+
+        const allTasksCompleted = updatedTasks.every(
+          (task) => task.status === "Completed"
+        );
+
+        return {
+          ...project,
+          tasks: updatedTasks,
+          status: allTasksCompleted ? "Completed" : project.status
+        };
+      })
+    );
+  };
+
+  window.addEventListener("nexora:complete-task", handleCompleteTask);
+
+  const savedTask = localStorage.getItem("nexora_ceo_complete_task");
+
+  if (savedTask) {
+    const task = JSON.parse(savedTask);
+
+    handleCompleteTask({
+      detail: {
+        taskName: task.taskName,
+        projectName: task.projectName
+      }
+    });
+
+    localStorage.removeItem("nexora_ceo_complete_task");
+  }
+
+  return () => {
+    window.removeEventListener(
+      "nexora:complete-task",
+      handleCompleteTask
+    );
   };
 }, []);
   const completeTask = (projectId, taskId) => {
