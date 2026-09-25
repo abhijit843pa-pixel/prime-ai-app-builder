@@ -1335,6 +1335,7 @@ useEffect(() => {
       handleChangeDepartment
     );
   };
+    }, []);
   const createProject = () => {
     const name = projectName.trim();
 
