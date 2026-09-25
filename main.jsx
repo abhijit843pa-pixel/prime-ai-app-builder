@@ -588,7 +588,43 @@ const getCEOReply = async (msg, onChunk) => {
   if (!input.trim()) return;
 
   const userMessage = input.trim();
+if (
+  userMessage.toLowerCase().includes("status") &&
+  userMessage.toLowerCase().includes("project")
+) {
+  const projects = JSON.parse(
+    localStorage.getItem("nexora_projects") || "[]"
+  );
 
+  const projectNameMatch = userMessage.match(
+    /status\s+(?:of|for)\s+(.+)$/i
+  );
+
+  if (projectNameMatch) {
+    const requestedName = projectNameMatch[1].trim().toLowerCase();
+
+    const project = projects.find(
+      (item) => item.name.trim().toLowerCase() === requestedName
+    );
+
+    const statusReply = project
+      ? `Project "${project.name}" status: ${project.status}. Tasks: ${project.tasks
+          .map((task) => `${task.name} - ${task.status}`)
+          .join(", ")}`
+      : `Project "${projectNameMatch[1].trim()}" was not found.`;
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      { role: "ceo", text: statusReply }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
 if (
   userMessage.toLowerCase().includes("create") &&
   userMessage.toLowerCase().includes("project")
