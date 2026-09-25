@@ -663,6 +663,44 @@ if (
     return;
   }
 }
+    if (
+  userMessage.toLowerCase().includes("completed") &&
+  userMessage.toLowerCase().includes("task")
+) {
+  const projects = JSON.parse(
+    localStorage.getItem("nexora_projects") || "[]"
+  );
+
+  const projectNameMatch = userMessage.match(
+    /(?:completed\s+)?tasks?\s+(?:in|of|for)\s+(.+)$/i
+  );
+
+  if (projectNameMatch) {
+    const requestedName = projectNameMatch[1].trim().toLowerCase();
+
+    const project = projects.find(
+      (item) => item.name.trim().toLowerCase() === requestedName
+    );
+
+    const completedReply = project
+      ? project.tasks
+          .filter((task) => task.status === "Completed")
+          .map((task) => `${task.name} - ${task.status}`)
+          .join(", ") || "No tasks are completed yet."
+      : `Project "${projectNameMatch[1].trim()}" was not found.`;
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      { role: "ceo", text: completedReply }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
 if (
   userMessage.toLowerCase().includes("create") &&
   userMessage.toLowerCase().includes("project")
