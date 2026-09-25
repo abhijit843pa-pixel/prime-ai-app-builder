@@ -1301,6 +1301,7 @@ useEffect(() => {
 
     localStorage.removeItem("nexora_ceo_project");
   }
+  }, []);
   useEffect(() => {
   const handleChangeDepartment = (event) => {
     const projectName =
@@ -1334,7 +1335,6 @@ useEffect(() => {
       handleChangeDepartment
     );
   };
-}, []);
   const createProject = () => {
     const name = projectName.trim();
 
