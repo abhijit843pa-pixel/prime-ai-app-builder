@@ -1301,6 +1301,39 @@ useEffect(() => {
 
     localStorage.removeItem("nexora_ceo_project");
   }
+  useEffect(() => {
+  const handleChangeDepartment = (event) => {
+    const projectName =
+      event.detail?.projectName?.trim().toLowerCase();
+
+    const department =
+      event.detail?.department?.trim();
+
+    if (!projectName || !department) return;
+
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.name.trim().toLowerCase() === projectName
+          ? {
+              ...project,
+              department: department
+            }
+          : project
+      )
+    );
+  };
+
+  window.addEventListener(
+    "nexora:change-department",
+    handleChangeDepartment
+  );
+
+  return () => {
+    window.removeEventListener(
+      "nexora:change-department",
+      handleChangeDepartment
+    );
+  };
 }, []);
   const createProject = () => {
     const name = projectName.trim();
