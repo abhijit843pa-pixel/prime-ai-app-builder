@@ -766,7 +766,52 @@ if (
   const projects = JSON.parse(
     localStorage.getItem("nexora_projects") || "[]"
   );
+if (
+  userMessage.toLowerCase().includes("assign") &&
+  userMessage.toLowerCase().includes("project")
+) {
+  const projects = JSON.parse(
+    localStorage.getItem("nexora_projects") || "[]"
+  );
 
+  const agentMatch = userMessage.match(
+    /assign\s+(.+?)\s+to\s+(.+)$/i
+  );
+
+  if (agentMatch) {
+    const projectName = agentMatch[1].trim();
+    const agentName = agentMatch[2].trim();
+
+    const updatedProjects = projects.map((project) =>
+      project.name.trim().toLowerCase() ===
+      projectName.toLowerCase()
+        ? {
+            ...project,
+            agent: agentName
+          }
+        : project
+    );
+
+    localStorage.setItem(
+      "nexora_projects",
+      JSON.stringify(updatedProjects)
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      {
+        role: "ceo",
+        text: `Project "${projectName}" assigned to ${agentName}.`
+      }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
   const priorityMatch = userMessage.match(
     /set\s+priority\s+of\s+(.+?)\s+to\s+(low|medium|high|critical)$/i
   );
