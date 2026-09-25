@@ -625,6 +625,44 @@ if (
     return;
   }
 }
+    if (
+  userMessage.toLowerCase().includes("pending") &&
+  userMessage.toLowerCase().includes("task")
+) {
+  const projects = JSON.parse(
+    localStorage.getItem("nexora_projects") || "[]"
+  );
+
+  const projectNameMatch = userMessage.match(
+    /tasks?\s+(?:in|of|for)\s+(.+)$/i
+  );
+
+  if (projectNameMatch) {
+    const requestedName = projectNameMatch[1].trim().toLowerCase();
+
+    const project = projects.find(
+      (item) => item.name.trim().toLowerCase() === requestedName
+    );
+
+    const pendingReply = project
+      ? project.tasks
+          .filter((task) => task.status !== "Completed")
+          .map((task) => `${task.name} - ${task.status}`)
+          .join(", ") || "All tasks are completed."
+      : `Project "${projectNameMatch[1].trim()}" was not found.`;
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      { role: "ceo", text: pendingReply }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
 if (
   userMessage.toLowerCase().includes("create") &&
   userMessage.toLowerCase().includes("project")
