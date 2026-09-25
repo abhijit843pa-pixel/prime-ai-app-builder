@@ -701,6 +701,65 @@ if (
     return;
   }
 }
+    if (
+  userMessage.toLowerCase().includes("assign") &&
+  userMessage.toLowerCase().includes("task")
+) {
+  const projects = JSON.parse(
+    localStorage.getItem("nexora_projects") || "[]"
+  );
+
+  const assignmentMatch = userMessage.match(
+    /assign\s+(.+?)\s+task\s+of\s+(.+?)\s+to\s+(.+)$/i
+  );
+
+  if (assignmentMatch) {
+    const taskName = assignmentMatch[1].trim();
+    const projectName = assignmentMatch[2].trim();
+    const agentName = assignmentMatch[3].trim();
+
+    const updatedProjects = projects.map((project) => {
+      if (
+        project.name.trim().toLowerCase() !==
+        projectName.toLowerCase()
+      ) {
+        return project;
+      }
+
+      return {
+        ...project,
+        tasks: project.tasks.map((task) =>
+          task.name.trim().toLowerCase() ===
+          taskName.toLowerCase()
+            ? {
+                ...task,
+                agent: agentName
+              }
+            : task
+        )
+      };
+    });
+
+    localStorage.setItem(
+      "nexora_projects",
+      JSON.stringify(updatedProjects)
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      {
+        role: "ceo",
+        text: `Task "${taskName}" in project "${projectName}" assigned to ${agentName}.`
+      }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
 if (
   userMessage.toLowerCase().includes("create") &&
   userMessage.toLowerCase().includes("project")
