@@ -634,8 +634,8 @@ if (
   );
 
   const projectNameMatch = userMessage.match(
-    /tasks?\s+(?:in|of|for)\s+(.+)$/i
-  );
+  /(?:pending\s+)?tasks?\s+(?:in|of|for)\s+(.+)$/i
+);
 
   if (projectNameMatch) {
     const requestedName = projectNameMatch[1].trim().toLowerCase();
