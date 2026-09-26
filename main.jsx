@@ -1392,6 +1392,40 @@ useEffect(() => {
     );
   };
     }, []);
+      useEffect(() => {
+  const handleChangeAgent = (event) => {
+    const projectName =
+      event.detail?.projectName?.trim().toLowerCase();
+
+    const agent =
+      event.detail?.agent?.trim();
+
+    if (!projectName || !agent) return;
+
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.name.trim().toLowerCase() === projectName
+          ? {
+              ...project,
+              agent: agent
+            }
+          : project
+      )
+    );
+  };
+
+  window.addEventListener(
+    "nexora:change-agent",
+    handleChangeAgent
+  );
+
+  return () => {
+    window.removeEventListener(
+      "nexora:change-agent",
+      handleChangeAgent
+    );
+  };
+}, []);
   const createProject = () => {
     const name = projectName.trim();
 
