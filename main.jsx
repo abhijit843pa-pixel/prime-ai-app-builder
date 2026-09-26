@@ -761,12 +761,6 @@ if (
   }
 }
     if (
-  userMessage.toLowerCase().includes("priority")
-) {
-  const projects = JSON.parse(
-    localStorage.getItem("nexora_projects") || "[]"
-  );
-if (
   userMessage.toLowerCase().includes("assign") &&
   userMessage.toLowerCase().includes("project")
 ) {
@@ -797,6 +791,15 @@ if (
       JSON.stringify(updatedProjects)
     );
 
+    window.dispatchEvent(
+      new CustomEvent("nexora:change-agent", {
+        detail: {
+          projectName: projectName,
+          agent: agentName
+        }
+      })
+    );
+
     setMessages((prev) => [
       ...prev,
       { role: "owner", text: userMessage },
@@ -812,6 +815,14 @@ if (
     return;
   }
 }
+
+if (
+  userMessage.toLowerCase().includes("priority")
+) {
+  const projects = JSON.parse(
+    localStorage.getItem("nexora_projects") || "[]"
+  );
+
   const priorityMatch = userMessage.match(
     /set\s+priority\s+of\s+(.+?)\s+to\s+(low|medium|high|critical)$/i
   );
@@ -836,14 +847,7 @@ if (
       "nexora_projects",
       JSON.stringify(updatedProjects)
     );
-window.dispatchEvent(
-  new CustomEvent("nexora:change-agent", {
-    detail: {
-      projectName: projectName,
-      agent: agentName
-    }
-  })
-);
+
     setMessages((prev) => [
       ...prev,
       { role: "owner", text: userMessage },
@@ -859,9 +863,6 @@ window.dispatchEvent(
     return;
   }
 }
-    if (
-  userMessage.toLowerCase().includes("department")
-) {
   const projects = JSON.parse(
     localStorage.getItem("nexora_projects") || "[]"
   );
