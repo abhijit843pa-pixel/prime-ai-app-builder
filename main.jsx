@@ -589,8 +589,8 @@ const getCEOReply = async (msg, onChunk) => {
 
   const userMessage = input.trim();
 if (
-  userMessage.toLowerCase().includes("status") &&
-  userMessage.toLowerCase().includes("project")
+  userMessage.toLowerCase().includes("change") &&
+  userMessage.toLowerCase().includes("status")
 ) {
   const projects = JSON.parse(
     localStorage.getItem("nexora_projects") || "[]"
