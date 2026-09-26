@@ -762,7 +762,7 @@ if (
 }
     if (
   userMessage.toLowerCase().includes("assign") &&
-  userMessage.toLowerCase().includes("project")
+  !userMessage.toLowerCase().includes("task")
 ) {
   const projects = JSON.parse(
     localStorage.getItem("nexora_projects") || "[]"
