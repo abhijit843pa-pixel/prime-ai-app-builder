@@ -863,6 +863,9 @@ if (
     return;
   }
 }
+    if (
+  userMessage.toLowerCase().includes("department")
+) {
   const projects = JSON.parse(
     localStorage.getItem("nexora_projects") || "[]"
   );
