@@ -815,7 +815,67 @@ if (
     return;
   }
 }
+if (
+  userMessage.toLowerCase().includes("status") &&
+  userMessage.toLowerCase().includes("project")
+) {
+  const projects = JSON.parse(
+    localStorage.getItem("nexora_projects") || "[]"
+  );
 
+  const statusMatch = userMessage.match(
+    /change\s+status\s+of\s+(.+?)\s+to\s+(planning|in progress|completed)$/i
+  );
+
+  if (statusMatch) {
+    const projectName = statusMatch[1].trim();
+    const status = statusMatch[2].trim();
+
+    const formattedStatus =
+      status === "in progress"
+        ? "In Progress"
+        : status.charAt(0).toUpperCase() +
+          status.slice(1).toLowerCase();
+
+    const updatedProjects = projects.map((project) =>
+      project.name.trim().toLowerCase() ===
+      projectName.toLowerCase()
+        ? {
+            ...project,
+            status: formattedStatus
+          }
+        : project
+    );
+
+    localStorage.setItem(
+      "nexora_projects",
+      JSON.stringify(updatedProjects)
+    );
+
+    window.dispatchEvent(
+      new CustomEvent("nexora:change-status", {
+        detail: {
+          projectName: projectName,
+          status: formattedStatus
+        }
+      })
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      {
+        role: "ceo",
+        text: `Project "${projectName}" status changed to ${formattedStatus}.`
+      }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
 if (
   userMessage.toLowerCase().includes("priority")
 ) {
