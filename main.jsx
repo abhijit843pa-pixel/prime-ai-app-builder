@@ -836,7 +836,14 @@ if (
       "nexora_projects",
       JSON.stringify(updatedProjects)
     );
-
+window.dispatchEvent(
+  new CustomEvent("nexora:change-agent", {
+    detail: {
+      projectName: projectName,
+      agent: agentName
+    }
+  })
+);
     setMessages((prev) => [
       ...prev,
       { role: "owner", text: userMessage },
