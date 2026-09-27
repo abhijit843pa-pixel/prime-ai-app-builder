@@ -646,6 +646,61 @@ const getCEOReply = async (msg, onChunk) => {
     return;
   }
 }
+    if (
+  userMessage.toLowerCase().includes("change") &&
+  userMessage.toLowerCase().includes("company")
+) {
+  const clients = JSON.parse(
+    localStorage.getItem("nexora_clients") || "[]"
+  );
+
+  const companyMatch = userMessage.match(
+    /change\s+company\s+of\s+(.+?)\s+to\s+(.+)$/i
+  );
+
+  if (companyMatch) {
+    const clientName = companyMatch[1].trim();
+    const company = companyMatch[2].trim();
+
+    const updatedClients = clients.map((client) =>
+      client.name.trim().toLowerCase() ===
+      clientName.toLowerCase()
+        ? {
+            ...client,
+            company: company
+          }
+        : client
+    );
+
+    localStorage.setItem(
+      "nexora_clients",
+      JSON.stringify(updatedClients)
+    );
+
+    window.dispatchEvent(
+      new CustomEvent("nexora:change-client-company", {
+        detail: {
+          clientName: clientName,
+          company: company
+        }
+      })
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      {
+        role: "ceo",
+        text: `Client "${clientName}" company changed to ${company}.`
+      }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
 if (
   userMessage.toLowerCase().includes("change") &&
   userMessage.toLowerCase().includes("status")
