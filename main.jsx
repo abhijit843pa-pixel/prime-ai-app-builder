@@ -1472,7 +1472,37 @@ function Clients() {
       JSON.stringify(clients)
     );
   }, [clients]);
+useEffect(() => {
+  const handleCreateClient = (event) => {
+    const client = event.detail?.client;
 
+    if (!client) return;
+
+    setClients((prevClients) => {
+      if (
+        prevClients.some(
+          (item) => item.id === client.id
+        )
+      ) {
+        return prevClients;
+      }
+
+      return [...prevClients, client];
+    });
+  };
+
+  window.addEventListener(
+    "nexora:create-client",
+    handleCreateClient
+  );
+
+  return () => {
+    window.removeEventListener(
+      "nexora:create-client",
+      handleCreateClient
+    );
+  };
+}, []);
   const addClient = () => {
     if (!clientName.trim()) {
       alert("Please enter client name");
