@@ -596,27 +596,51 @@ if (
     localStorage.getItem("nexora_projects") || "[]"
   );
 
-  const projectNameMatch = userMessage.match(
-    /status\s+(?:of|for)\s+(.+)$/i
+  const statusMatch = userMessage.match(
+    /change\s+status\s+of\s+(.+?)\s+to\s+(planning|in progress|completed)$/i
   );
 
-  if (projectNameMatch) {
-    const requestedName = projectNameMatch[1].trim().toLowerCase();
+  if (statusMatch) {
+    const projectName = statusMatch[1].trim();
+    const status = statusMatch[2].trim();
 
-    const project = projects.find(
-      (item) => item.name.trim().toLowerCase() === requestedName
+    const formattedStatus =
+      status.toLowerCase() === "in progress"
+        ? "In Progress"
+        : status.charAt(0).toUpperCase() +
+          status.slice(1).toLowerCase();
+
+    const updatedProjects = projects.map((project) =>
+      project.name.trim().toLowerCase() ===
+      projectName.toLowerCase()
+        ? {
+            ...project,
+            status: formattedStatus
+          }
+        : project
     );
 
-    const statusReply = project
-      ? `Project "${project.name}" status: ${project.status}. Tasks: ${project.tasks
-          .map((task) => `${task.name} - ${task.status}`)
-          .join(", ")}`
-      : `Project "${projectNameMatch[1].trim()}" was not found.`;
+    localStorage.setItem(
+      "nexora_projects",
+      JSON.stringify(updatedProjects)
+    );
+
+    window.dispatchEvent(
+      new CustomEvent("nexora:change-status", {
+        detail: {
+          projectName: projectName,
+          status: formattedStatus
+        }
+      })
+    );
 
     setMessages((prev) => [
       ...prev,
       { role: "owner", text: userMessage },
-      { role: "ceo", text: statusReply }
+      {
+        role: "ceo",
+        text: `Project "${projectName}" status changed to ${formattedStatus}.`
+      }
     ]);
 
     setInput("");
