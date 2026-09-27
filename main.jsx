@@ -1927,7 +1927,9 @@ useEffect(() => {
               <p>
                 <b>Status:</b> {project.status}
               </p>
-
+               <p>
+               <b>Priority:</b> {project.priority || "Not set"}
+             </p>
               <p>
                 <b>Department:</b> {project.department}
               </p>
