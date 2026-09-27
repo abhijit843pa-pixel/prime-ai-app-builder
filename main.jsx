@@ -817,7 +817,8 @@ if (
 }
 if (
   userMessage.toLowerCase().includes("status") &&
-  userMessage.toLowerCase().includes("project")
+  userMessage.toLowerCase().includes("project") &&
+  !userMessage.toLowerCase().includes("change")
 ) {
   const projects = JSON.parse(
     localStorage.getItem("nexora_projects") || "[]"
