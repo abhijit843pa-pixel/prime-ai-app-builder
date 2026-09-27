@@ -1396,6 +1396,54 @@ function Agents() {
     
   
 function Clients() {
+  const [showForm, setShowForm] = useState(false);
+  const [clientName, setClientName] = useState("");
+  const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [requirements, setRequirements] = useState("");
+
+  const [clients, setClients] = useState(() => {
+    const savedClients = localStorage.getItem("nexora_clients");
+    return savedClients ? JSON.parse(savedClients) : [];
+  });
+
+  useEffect(() => {
+    localStorage.setItem(
+      "nexora_clients",
+      JSON.stringify(clients)
+    );
+  }, [clients]);
+
+  const addClient = () => {
+    if (!clientName.trim()) {
+      alert("Please enter client name");
+      return;
+    }
+
+    const newClient = {
+      id: Date.now(),
+      name: clientName.trim(),
+      company: company.trim(),
+      email: email.trim(),
+      phone: phone.trim(),
+      requirements: requirements.trim(),
+      status: "Active"
+    };
+
+    setClients((prevClients) => [
+      ...prevClients,
+      newClient
+    ]);
+
+    setClientName("");
+    setCompany("");
+    setEmail("");
+    setPhone("");
+    setRequirements("");
+    setShowForm(false);
+  };
+
   return (
     <section className="content">
       <div className="page-head">
@@ -1404,13 +1452,97 @@ function Clients() {
           <h2>Clients</h2>
           <p>Client requirements, contacts and future projects.</p>
         </div>
-        <button className="primary">
+
+        <button
+          className="primary"
+          onClick={() => setShowForm(!showForm)}
+        >
           <Plus size={18} />
           Add Client
         </button>
       </div>
 
-      <Empty title="No clients yet" text="Client management will be connected to the Nexora backend." />
+      {showForm && (
+        <div className="card">
+          <h3>Add New Client</h3>
+
+          <input
+            placeholder="Client Name"
+            value={clientName}
+            onChange={(e) => setClientName(e.target.value)}
+          />
+
+          <input
+            placeholder="Company"
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+          />
+
+          <input
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <input
+            placeholder="Phone"
+            value={phone}
+            onChange={(e) => setPhone(e.target.value)}
+          />
+
+          <textarea
+            placeholder="Client Requirements"
+            value={requirements}
+            onChange={(e) => setRequirements(e.target.value)}
+          />
+
+          <button
+            className="primary"
+            onClick={addClient}
+          >
+            Save Client
+          </button>
+        </div>
+      )}
+
+      {clients.length === 0 ? (
+        <Empty
+          title="No clients yet"
+          text="Add your first Nexora client."
+        />
+      ) : (
+        <div className="grid">
+          {clients.map((client) => (
+            <div className="card" key={client.id}>
+              <h3>{client.name}</h3>
+
+              <p>
+                <b>Company:</b>{" "}
+                {client.company || "Not provided"}
+              </p>
+
+              <p>
+                <b>Email:</b>{" "}
+                {client.email || "Not provided"}
+              </p>
+
+              <p>
+                <b>Phone:</b>{" "}
+                {client.phone || "Not provided"}
+              </p>
+
+              <p>
+                <b>Requirements:</b>{" "}
+                {client.requirements || "Not provided"}
+              </p>
+
+              <p>
+                <b>Status:</b> {client.status}
+              </p>
+            </div>
+          ))}
+        </div>
+      )}
     </section>
   );
 }
