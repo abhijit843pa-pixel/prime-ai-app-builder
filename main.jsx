@@ -993,6 +993,51 @@ if (
     return;
   }
 }
+    if (
+  userMessage.toLowerCase().includes("description")
+) {
+  const projects = JSON.parse(
+    localStorage.getItem("nexora_projects") || "[]"
+  );
+
+  const descriptionMatch = userMessage.match(
+    /change\s+description\s+of\s+(.+?)\s+to\s+(.+)$/i
+  );
+
+  if (descriptionMatch) {
+    const projectName = descriptionMatch[1].trim();
+    const description = descriptionMatch[2].trim();
+
+    const updatedProjects = projects.map((project) =>
+      project.name.trim().toLowerCase() ===
+      projectName.toLowerCase()
+        ? {
+            ...project,
+            description: description
+          }
+        : project
+    );
+
+    localStorage.setItem(
+      "nexora_projects",
+      JSON.stringify(updatedProjects)
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      {
+        role: "ceo",
+        text: `Project "${projectName}" description changed successfully.`
+      }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
 if (
   userMessage.toLowerCase().includes("create") &&
   userMessage.toLowerCase().includes("project")
