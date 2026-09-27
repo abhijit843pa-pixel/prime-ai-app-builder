@@ -1022,7 +1022,14 @@ if (
       "nexora_projects",
       JSON.stringify(updatedProjects)
     );
-
+window.dispatchEvent(
+  new CustomEvent("nexora:change-description", {
+    detail: {
+      projectName: projectName,
+      description: description
+    }
+  })
+);
     setMessages((prev) => [
       ...prev,
       { role: "owner", text: userMessage },
