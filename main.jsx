@@ -1590,6 +1590,40 @@ useEffect(() => {
     );
   };
 }, []);
+      useEffect(() => {
+  const handleChangeDescription = (event) => {
+    const projectName =
+      event.detail?.projectName?.trim().toLowerCase();
+
+    const description =
+      event.detail?.description?.trim();
+
+    if (!projectName || !description) return;
+
+    setProjects((prevProjects) =>
+      prevProjects.map((project) =>
+        project.name.trim().toLowerCase() === projectName
+          ? {
+              ...project,
+              description: description
+            }
+          : project
+      )
+    );
+  };
+
+  window.addEventListener(
+    "nexora:change-description",
+    handleChangeDescription
+  );
+
+  return () => {
+    window.removeEventListener(
+      "nexora:change-description",
+      handleChangeDescription
+    );
+  };
+}, []);
   const createProject = () => {
     const name = projectName.trim();
 
