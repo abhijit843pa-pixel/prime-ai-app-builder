@@ -1527,6 +1527,40 @@ function Clients() {
       JSON.stringify(clients)
     );
   }, [clients]);
+  useEffect(() => {
+  const handleChangeClientCompany = (event) => {
+    const clientName =
+      event.detail?.clientName?.trim().toLowerCase();
+
+    const company =
+      event.detail?.company?.trim();
+
+    if (!clientName || !company) return;
+
+    setClients((prevClients) =>
+      prevClients.map((client) =>
+        client.name.trim().toLowerCase() === clientName
+          ? {
+              ...client,
+              company: company
+            }
+          : client
+      )
+    );
+  };
+
+  window.addEventListener(
+    "nexora:change-client-company",
+    handleChangeClientCompany
+  );
+
+  return () => {
+    window.removeEventListener(
+      "nexora:change-client-company",
+      handleChangeClientCompany
+    );
+  };
+}, []);
 useEffect(() => {
   const handleCreateClient = (event) => {
     const client = event.detail?.client;
