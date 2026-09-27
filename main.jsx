@@ -588,6 +588,64 @@ const getCEOReply = async (msg, onChunk) => {
   if (!input.trim()) return;
 
   const userMessage = input.trim();
+    if (
+  userMessage.toLowerCase().includes("create") &&
+  userMessage.toLowerCase().includes("client")
+) {
+  const clientMatch = userMessage.match(
+    /create\s+client\s+(.+)$/i
+  );
+
+  if (clientMatch) {
+    const clientName = clientMatch[1].trim();
+
+    const clients = JSON.parse(
+      localStorage.getItem("nexora_clients") || "[]"
+    );
+
+    const newClient = {
+      id: Date.now(),
+      name: clientName,
+      company: "",
+      email: "",
+      phone: "",
+      requirements: "",
+      status: "Active"
+    };
+
+    const updatedClients = [
+      ...clients,
+      newClient
+    ];
+
+    localStorage.setItem(
+      "nexora_clients",
+      JSON.stringify(updatedClients)
+    );
+
+    window.dispatchEvent(
+      new CustomEvent("nexora:create-client", {
+        detail: {
+          client: newClient
+        }
+      })
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      {
+        role: "ceo",
+        text: `Client "${clientName}" created successfully.`
+      }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
 if (
   userMessage.toLowerCase().includes("change") &&
   userMessage.toLowerCase().includes("status")
