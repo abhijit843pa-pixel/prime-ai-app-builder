@@ -763,6 +763,61 @@ if (
   }
 }
     if (
+  userMessage.toLowerCase().includes("change") &&
+  userMessage.toLowerCase().includes("requirements")
+) {
+  const clients = JSON.parse(
+    localStorage.getItem("nexora_clients") || "[]"
+  );
+
+  const requirementsMatch = userMessage.match(
+    /change\s+requirements\s+of\s+(.+?)\s+to\s+(.+)$/i
+  );
+
+  if (requirementsMatch) {
+    const clientName = requirementsMatch[1].trim();
+    const requirements = requirementsMatch[2].trim();
+
+    const updatedClients = clients.map((client) =>
+      client.name.trim().toLowerCase() ===
+      clientName.toLowerCase()
+        ? {
+            ...client,
+            requirements: requirements
+          }
+        : client
+    );
+
+    localStorage.setItem(
+      "nexora_clients",
+      JSON.stringify(updatedClients)
+    );
+
+    window.dispatchEvent(
+      new CustomEvent("nexora:change-client-requirements", {
+        detail: {
+          clientName: clientName,
+          requirements: requirements
+        }
+      })
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      {
+        role: "ceo",
+        text: `Client "${clientName}" requirements changed successfully.`
+      }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
+    if (
   userMessage.toLowerCase().includes("pending") &&
   userMessage.toLowerCase().includes("task")
 ) {
