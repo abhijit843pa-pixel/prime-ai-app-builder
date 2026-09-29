@@ -2188,6 +2188,12 @@ useEffect(() => {
               <p>
                 <b>Status:</b> {client.status}
               </p>
+              {client.project && (
+  <p>
+    <b>Project:</b> {client.project}
+  </p>
+)}
+
             </div>
           ))}
         </div>
