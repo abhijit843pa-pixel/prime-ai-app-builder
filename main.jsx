@@ -1564,6 +1564,110 @@ if (
     return;
   }
 }
+    if (
+  userMessage.toLowerCase().includes("assign") &&
+  userMessage.toLowerCase().includes("project") &&
+  userMessage.toLowerCase().includes("client")
+) {
+  const clients = JSON.parse(
+    localStorage.getItem("nexora_clients") || "[]"
+  );
+
+  const projects = JSON.parse(
+    localStorage.getItem("nexora_projects") || "[]"
+  );
+
+  const assignMatch = userMessage.match(
+    /assign\s+project\s+(.+?)\s+to\s+client\s+(.+)$/i
+  );
+
+  if (assignMatch) {
+    const projectName = assignMatch[1].trim();
+    const clientName = assignMatch[2].trim();
+
+    const clientExists = clients.some(
+      (client) =>
+        client.name.trim().toLowerCase() ===
+        clientName.toLowerCase()
+    );
+
+    const projectExists = projects.some(
+      (project) =>
+        project.name.trim().toLowerCase() ===
+        projectName.toLowerCase()
+    );
+
+    if (!clientExists) {
+      setMessages((prev) => [
+        ...prev,
+        { role: "owner", text: userMessage },
+        {
+          role: "ceo",
+          text: `Client "${clientName}" not found.`
+        }
+      ]);
+
+      setInput("");
+      setCeoStatus("Ready");
+
+      return;
+    }
+
+    if (!projectExists) {
+      setMessages((prev) => [
+        ...prev,
+        { role: "owner", text: userMessage },
+        {
+          role: "ceo",
+          text: `Project "${projectName}" not found.`
+        }
+      ]);
+
+      setInput("");
+      setCeoStatus("Ready");
+
+      return;
+    }
+
+    const updatedClients = clients.map((client) =>
+      client.name.trim().toLowerCase() ===
+      clientName.toLowerCase()
+        ? {
+            ...client,
+            project: projectName
+          }
+        : client
+    );
+
+    localStorage.setItem(
+      "nexora_clients",
+      JSON.stringify(updatedClients)
+    );
+
+    window.dispatchEvent(
+      new CustomEvent("nexora:assign-client-project", {
+        detail: {
+          clientName: clientName,
+          projectName: projectName
+        }
+      })
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      {
+        role: "ceo",
+        text: `Project "${projectName}" assigned to client "${clientName}".`
+      }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+    }
   const department =
     userMessage.toLowerCase().includes("project") ||
     userMessage.toLowerCase().includes("phase") ||
