@@ -1505,6 +1505,65 @@ if (
     return;
   }
 }
+    if (
+  userMessage.toLowerCase().includes("change") &&
+  userMessage.toLowerCase().includes("status") &&
+  userMessage.toLowerCase().includes("client")
+) {
+  const clients = JSON.parse(
+    localStorage.getItem("nexora_clients") || "[]"
+  );
+
+  const clientStatusMatch = userMessage.match(
+    /change\s+status\s+of\s+client\s+(.+?)\s+to\s+(active|inactive)$/i
+  );
+
+  if (clientStatusMatch) {
+    const clientName = clientStatusMatch[1].trim();
+    const status =
+      clientStatusMatch[2].toLowerCase() === "active"
+        ? "Active"
+        : "Inactive";
+
+    const updatedClients = clients.map((client) =>
+      client.name.trim().toLowerCase() ===
+      clientName.toLowerCase()
+        ? {
+            ...client,
+            status: status
+          }
+        : client
+    );
+
+    localStorage.setItem(
+      "nexora_clients",
+      JSON.stringify(updatedClients)
+    );
+
+    window.dispatchEvent(
+      new CustomEvent("nexora:change-client-status", {
+        detail: {
+          clientName: clientName,
+          status: status
+        }
+      })
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      {
+        role: "ceo",
+        text: `Client "${clientName}" status changed to ${status}.`
+      }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
   const department =
     userMessage.toLowerCase().includes("project") ||
     userMessage.toLowerCase().includes("phase") ||
