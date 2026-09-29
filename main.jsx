@@ -1401,6 +1401,61 @@ if (
     return;
   }
 }
+    if (
+  userMessage.toLowerCase().includes("change") &&
+  userMessage.toLowerCase().includes("phone")
+) {
+  const clients = JSON.parse(
+    localStorage.getItem("nexora_clients") || "[]"
+  );
+
+  const phoneMatch = userMessage.match(
+    /change\s+phone\s+of\s+(.+?)\s+to\s+(.+)$/i
+  );
+
+  if (phoneMatch) {
+    const clientName = phoneMatch[1].trim();
+    const phone = phoneMatch[2].trim();
+
+    const updatedClients = clients.map((client) =>
+      client.name.trim().toLowerCase() ===
+      clientName.toLowerCase()
+        ? {
+            ...client,
+            phone: phone
+          }
+        : client
+    );
+
+    localStorage.setItem(
+      "nexora_clients",
+      JSON.stringify(updatedClients)
+    );
+
+    window.dispatchEvent(
+      new CustomEvent("nexora:change-client-phone", {
+        detail: {
+          clientName: clientName,
+          phone: phone
+        }
+      })
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      {
+        role: "ceo",
+        text: `Client "${clientName}" phone changed successfully.`
+      }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
   const department =
     userMessage.toLowerCase().includes("project") ||
     userMessage.toLowerCase().includes("phase") ||
