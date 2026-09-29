@@ -1726,6 +1726,40 @@ function Clients() {
     );
   };
 }, []);
+  useEffect(() => {
+  const handleChangeClientPhone = (event) => {
+    const clientName =
+      event.detail?.clientName?.trim().toLowerCase();
+
+    const phone =
+      event.detail?.phone?.trim();
+
+    if (!clientName || !phone) return;
+
+    setClients((prevClients) =>
+      prevClients.map((client) =>
+        client.name.trim().toLowerCase() === clientName
+          ? {
+              ...client,
+              phone: phone
+            }
+          : client
+      )
+    );
+  };
+
+  window.addEventListener(
+    "nexora:change-client-phone",
+    handleChangeClientPhone
+  );
+
+  return () => {
+    window.removeEventListener(
+      "nexora:change-client-phone",
+      handleChangeClientPhone
+    );
+  };
+}, []);
 useEffect(() => {
   const handleCreateClient = (event) => {
     const client = event.detail?.client;
