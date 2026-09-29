@@ -1583,7 +1583,9 @@ if (
 
 
   if (assignMatch) {
-    const projectName = assignMatch[1].trim();
+    const projectName = assignMatch[1]
+  .trim()
+  .replace(/^project\s+/i, "");
     const clientName = assignMatch[2].trim();
 
     const clientExists = clients.some(
