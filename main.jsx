@@ -1456,6 +1456,55 @@ if (
     return;
   }
 }
+    if (
+  userMessage.toLowerCase().includes("delete") &&
+  userMessage.toLowerCase().includes("client")
+) {
+  const clients = JSON.parse(
+    localStorage.getItem("nexora_clients") || "[]"
+  );
+
+  const deleteClientMatch = userMessage.match(
+    /delete\s+client\s+(.+)$/i
+  );
+
+  if (deleteClientMatch) {
+    const clientName = deleteClientMatch[1].trim();
+
+    const updatedClients = clients.filter(
+      (client) =>
+        client.name.trim().toLowerCase() !==
+        clientName.toLowerCase()
+    );
+
+    localStorage.setItem(
+      "nexora_clients",
+      JSON.stringify(updatedClients)
+    );
+
+    window.dispatchEvent(
+      new CustomEvent("nexora:delete-client", {
+        detail: {
+          clientName: clientName
+        }
+      })
+    );
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "owner", text: userMessage },
+      {
+        role: "ceo",
+        text: `Client "${clientName}" deleted successfully.`
+      }
+    ]);
+
+    setInput("");
+    setCeoStatus("Ready");
+
+    return;
+  }
+}
   const department =
     userMessage.toLowerCase().includes("project") ||
     userMessage.toLowerCase().includes("phase") ||
