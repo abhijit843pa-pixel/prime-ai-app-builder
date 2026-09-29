@@ -1776,6 +1776,33 @@ function Clients() {
   };
 }, []);
   useEffect(() => {
+  const handleDeleteClient = (event) => {
+    const clientName =
+      event.detail?.clientName?.trim().toLowerCase();
+
+    if (!clientName) return;
+
+    setClients((prevClients) =>
+      prevClients.filter(
+        (client) =>
+          client.name.trim().toLowerCase() !== clientName
+      )
+    );
+  };
+
+  window.addEventListener(
+    "nexora:delete-client",
+    handleDeleteClient
+  );
+
+  return () => {
+    window.removeEventListener(
+      "nexora:delete-client",
+      handleDeleteClient
+    );
+  };
+}, []);
+  useEffect(() => {
   const handleChangeClientPhone = (event) => {
     const clientName =
       event.detail?.clientName?.trim().toLowerCase();
