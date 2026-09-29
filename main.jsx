@@ -1578,8 +1578,9 @@ if (
   );
 
   const assignMatch = userMessage.match(
-    /assign\s+project\s+(.+?)\s+to\s+client\s+(.+)$/i
-  );
+  /assign\s+project\s+(.+?)\s+to\s+client\s+(.+)$/i
+);
+
 
   if (assignMatch) {
     const projectName = assignMatch[1].trim();
