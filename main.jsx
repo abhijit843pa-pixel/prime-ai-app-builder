@@ -1760,16 +1760,65 @@ Agent Role: ${agentRole}`;
     <p><b>Owner Approval Required</b></p>
     <button
       className="primary"
-      onClick={() => {
+onClick={() => {
   setAwaitingApproval(false);
-  setCeoStatus("Execution Started");
-  setTimeout(() => {
-  setCeoStatus(`Working... → ${approvedAgent}`);
 
-   setTimeout(() => {
-  setCeoStatus(`Completed → ${approvedAgent}`);
-     }, 2000);
-}, 1000);
+  const project = {
+    id: Date.now(),
+    name: "Nexora Company Website",
+    description: "Build the official Nexora company website.",
+    status: "Planning",
+    department: "Web Development",
+    agent: "Web Development Agent",
+    plan: "Requirements → UI/UX → Development → QA → Deployment",
+    tasks: [
+      {
+        id: 1,
+        name: "Requirements",
+        agent: "Web Development Agent",
+        status: "Pending"
+      },
+      {
+        id: 2,
+        name: "UI/UX",
+        agent: "Frontend Agent",
+        status: "Pending"
+      },
+      {
+        id: 3,
+        name: "Development",
+        agent: "Web Development Agent",
+        status: "Pending"
+      },
+      {
+        id: 4,
+        name: "QA & Testing",
+        agent: "QA Agent",
+        status: "Pending"
+      },
+      {
+        id: 5,
+        name: "Deployment",
+        agent: "Cloud & DevOps Agent",
+        status: "Pending"
+      }
+    ]
+  };
+
+  localStorage.setItem(
+    "nexora_ceo_project",
+    JSON.stringify(project)
+  );
+
+  setCeoStatus("Execution Started");
+
+  setTimeout(() => {
+    setCeoStatus(`Working... → ${approvedAgent}`);
+
+    setTimeout(() => {
+      setCeoStatus(`Completed → ${approvedAgent}`);
+    }, 2000);
+  }, 1000);
 }}
     >
       Approve Plan
