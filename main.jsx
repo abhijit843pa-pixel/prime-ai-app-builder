@@ -1765,11 +1765,11 @@ onClick={() => {
 
   const project = {
     id: Date.now(),
-    name: "Nexora Company Website",
-    description: "Build the official Nexora company website.",
+    name: `${department === "Mobile Development" ? "Nexora Mobile App" : department === "Game Studio" ? "Nexora Game Project" : department === "Web Development" ? "Nexora Company Website" : "Nexora Project"}`,
+description: userMessage,
+department: department,
     status: "Planning",
-    department: "Web Development",
-    agent: "Web Development Agent",
+    agent: agent,
     plan: "Requirements → UI/UX → Development → QA → Deployment",
     tasks: [
       {
