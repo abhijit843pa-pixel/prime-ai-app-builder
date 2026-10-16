@@ -1671,13 +1671,7 @@ if (
     return;
   }
     }
-  const department =
-    userMessage.toLowerCase().includes("project") ||
-    userMessage.toLowerCase().includes("phase") ||
-    userMessage.toLowerCase().includes("approve")
-      ? "AI CEO"
-      : detectDepartment(userMessage);
-
+  const department = detectDepartment(userMessage);
   const agent = detectAgent(userMessage, department) || "CEO Agent";
   const agentRole = getAgentRole(agent);
 
