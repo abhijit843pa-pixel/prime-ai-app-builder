@@ -1222,51 +1222,52 @@ if (
   );
 
   if (nameMatch) {
-    localStorage.setItem(
-  "nexora_ceo_project",
-  JSON.stringify({
-    id: Date.now(),
-    name: nameMatch[1].trim(),
-    description: "",
-    status: "Planning",
-    department: "Web Development",
-    agent: "Web Development Agent",
-    plan: "Requirements → UI/UX → Development → QA → Deployment",
-    tasks: [
-      {
-        id: 1,
-        name: "Requirements",
-        agent: "Web Development Agent",
+  const projectDepartment = detectDepartment(userMessage);
+  const projectAgent = detectAgent(userMessage, projectDepartment);
+
+  const taskNames =
+    projectDepartment === "Mobile Development"
+      ? [
+          ["Requirements", projectAgent],
+          ["UI/UX Design", "Frontend Agent"],
+          ["App Development", projectAgent],
+          ["QA & Testing", "QA Agent"],
+          ["Release Planning", "Cloud & DevOps Agent"]
+        ]
+      : projectDepartment === "Game Studio"
+        ? [
+            ["Requirements", projectAgent],
+            ["Game Design", "UI/UX Agent"],
+            ["Game Development", "Game Development Agent"],
+            ["QA & Testing", "QA Agent"],
+            ["Release Planning", "Cloud & DevOps Agent"]
+          ]
+        : [
+            ["Requirements", projectAgent],
+            ["UI/UX", "Frontend Agent"],
+            ["Development", projectAgent],
+            ["QA & Testing", "QA Agent"],
+            ["Deployment", "Cloud & DevOps Agent"]
+          ];
+
+  localStorage.setItem(
+    "nexora_ceo_project",
+    JSON.stringify({
+      id: Date.now(),
+      name: nameMatch[1].trim(),
+      description: userMessage,
+      status: "Planning",
+      department: projectDepartment,
+      agent: projectAgent,
+      plan: taskNames.map((task) => task[0]).join(" → "),
+      tasks: taskNames.map((task, index) => ({
+        id: index + 1,
+        name: task[0],
+        agent: task[1],
         status: "Pending"
-      },
-      {
-        id: 2,
-        name: "UI/UX",
-        agent: "Frontend Agent",
-        status: "Pending"
-      },
-      {
-        id: 3,
-        name: "Development",
-        agent: "Web Development Agent",
-        status: "Pending"
-      },
-      {
-        id: 4,
-        name: "QA & Testing",
-        agent: "QA Agent",
-        status: "Pending"
-      },
-      {
-        id: 5,
-        name: "Deployment",
-        agent: "Cloud & DevOps Agent",
-        status: "Pending"
-      }
-    ]
-  })
-);
-  }
+      }))
+    })
+  );
 }
       if (
     userMessage.toLowerCase().includes("start") &&
