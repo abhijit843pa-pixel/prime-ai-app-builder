@@ -1268,8 +1268,9 @@ if (
       }))
     })
   );
+  }
 }
-      if (
+  if (
     userMessage.toLowerCase().includes("start") &&
     userMessage.toLowerCase().includes("project")
   ) {
