@@ -433,6 +433,7 @@ function CEO() {
   const [ceoStatus, setCeoStatus] = useState("Ready");
   const [awaitingApproval, setAwaitingApproval] = useState(false);
   const [approvedAgent, setApprovedAgent] = useState("");
+const [pendingPlan, setPendingPlan] = useState(null);
   const detectDepartment = (message) => {
   const text = message.toLowerCase();
 
@@ -1719,7 +1720,12 @@ Agent Role: ${agentRole}`;
 
   setIsTyping(false);
   setApprovedAgent(agent);
-  setAwaitingApproval(true);
+setPendingPlan({
+  department,
+  agent,
+  description: userMessage
+});
+setAwaitingApproval(true);
   setCeoStatus("Ready");
 };
       
